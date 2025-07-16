@@ -35,6 +35,36 @@ function Dashboard() {
       farmer: "Robert Johnson"
     }
   ]);
+ // Settings states
+  const [profile, setProfile] = useState({
+    name: 'John Doe',
+    email: 'john@example.com',
+    phone: '+250 78 123 4567',
+    location: 'Kigali, Rwanda',
+    photo: '/images/default-profile.jpg'
+  });
+  
+  const [notifications, setNotifications] = useState({
+    emailNotifications: true,
+    smsNotifications: false,
+    priceAlerts: true,
+    newCropAlerts: true
+  });
+  
+  const [security, setSecurity] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  });
+  
+  const [activeSetting, setActiveSetting] = useState('profile');
+  const [showProductForm, setShowProductForm] = useState(false);
+  const [newProduct, setNewProduct] = useState({
+    name: "",
+    quantity: "",
+    price: "",
+    image: null,
+    farmer: "Current User"
+  });
 }
-
 export default Dashboard;
