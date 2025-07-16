@@ -1,51 +1,61 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-// import './AuthPage.css'; // REMOVED
+import { motion } from 'framer-motion';
 
-function AuthPage() {
+// AuthPage component for user login
+const AuthPage = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  // Handle the login form submission
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log('Logging in with:', { email, password });
-    // Simulate login success
     navigate('/dashboard');
   };
 
+  // adding animations on page 
   return (
-    <div className="page-background">
-      <div className="form-container">
-        <h1>Login / Sign up</h1>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="page-container"
+    >
+      <motion.div 
+        className="dark-card"
+        initial={{ y: 20 }}
+        animate={{ y: 0 }}
+      >
+        <h1>{t('auth.title')}</h1>
         <form onSubmit={handleLogin}>
           <input
-            className="input-field"
             type="email"
-            placeholder="Email"
+            placeholder={t('auth.emailPlaceholder')}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
           <input
-            className="input-field"
             type="password"
-            placeholder="Password"
+            placeholder={t('auth.passwordPlaceholder')}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <button type="submit" className="btn">Login</button>
+          <button type="submit">{t('auth.loginButton')}</button>
         </form>
-        <p>
-          <Link to="/signup">Create an account</Link>
+        <p className="form-footer">
+          {t('auth.noAccount')} <Link to="/signup">{t('auth.createAccount')}</Link>
         </p>
-        <p>
-          Are you a farmer? <Link to="/membership">Request a membership</Link>
+        <p className="form-footer">
+          {t('auth.farmerQuestion')} <Link to="/membership">{t('auth.requestMembership')}</Link>
         </p>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
-}
+};
 
 export default AuthPage;
