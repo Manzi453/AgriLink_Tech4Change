@@ -9,7 +9,7 @@ import HomePage from './HomePage';
 import SignUpPage from './SignUpPage';
 import MembershipPage from './MembershipPage';
 import AuthPage from './AuthPage';
-import Dashboard from './Dashboard';
+import Dashboard from './Dashboard.';
 import './App.css';
 
 
