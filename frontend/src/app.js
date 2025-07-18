@@ -1,4 +1,3 @@
-// importing modules and react
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
@@ -9,11 +8,9 @@ import HomePage from './HomePage';
 import SignUpPage from './SignUpPage';
 import MembershipPage from './MembershipPage';
 import AuthPage from './AuthPage';
-import Dashboard from './Dashboard';
+import Dashboard from './Dashboard.';
 import './App.css';
 
-
-//  defining routes for the application
 const App = () => {
   return (
     <I18nextProvider i18n={i18n}>
