@@ -4,13 +4,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const AuthPage = () => {
-    // Hook for internationalization
-  const { t } = useTranslation(); 
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // Handling form submission and navigation to dashboard
   const handleLogin = (e) => {
     e.preventDefault();
     navigate('/dashboard');

@@ -35,7 +35,8 @@ function Dashboard() {
       farmer: "Robert Johnson"
     }
   ]);
- // Settings states
+
+  // Settings states
   const [profile, setProfile] = useState({
     name: 'John Doe',
     email: 'john@example.com',
@@ -66,6 +67,7 @@ function Dashboard() {
     image: null,
     farmer: "Current User"
   });
+
   // Handler functions
   const handleProfileChange = (e) => {
     const { name, value } = e.target;
@@ -594,4 +596,5 @@ function Dashboard() {
     </motion.div>
   );
 }
+
 export default Dashboard;
