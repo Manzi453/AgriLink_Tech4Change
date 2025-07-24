@@ -13,15 +13,14 @@ const Navbar = () => {
           <Link to="/home" className="logo">
             {t('appName')}
           </Link>
-          
         </div>
         
         <div className="navbar-right">
-          <LanguageSwitcher />
           <div className="auth-buttons">
             <Link to="/auth" className="login-btn">{t('login')}</Link>
             <Link to="/signup" className="signup-btn">{t('signupLabel')}</Link>
           </div>
+          <LanguageSwitcher />
         </div>
       </div>
     </nav>

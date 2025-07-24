@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -6,34 +6,42 @@ import Navbar from './Navbar';
 
 const HomePage = () => {
   const { t } = useTranslation();
-  
-  // Sample products data
-  const products = [
-    {
-      id: 1,
-      name: "Maize",
-      image: "/images/maize.jpg",
-      farmer: "John Doe",
-      phone: "+250 78 123 4567",
-      price: "200"
-    },
-    {
-      id: 2,
-      name: "Beans",
-      image: "/images/beans.jpg",
-      farmer: "Jane Smith",
-      phone: "+250 78 987 6543",
-      price: "450"
-    },
-    {
-      id: 3,
-      name: "Potatoes",
-      image: "/images/potatoes.jpg",
-      farmer: "Robert Johnson",
-      phone: "+250 78 555 1212",
-      price: "250"
-    }
-  ];
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    // Simulate fetching only published products
+    const publishedProducts = [
+      {
+        id: 1,
+        name: "Maize",
+        image: "/images/maize.jpg",
+        farmer: "John Doe",
+        phone: "+250 78 123 4567",
+        price: "200",
+        published: true
+      },
+      {
+        id: 2,
+        name: "Beans",
+        image: "/images/beans.jpg",
+        farmer: "Jane Smith",
+        phone: "+250 78 987 6543",
+        price: "450",
+        published: true
+      },
+      {
+        id: 3,
+        name: "Potatoes",
+        image: "/images/potatoes.jpg",
+        farmer: "Robert Johnson",
+        phone: "+250 78 555 1212",
+        price: "250",
+        published: true
+      }
+    ].filter(p => p.published);
+    
+    setProducts(publishedProducts);
+  }, []);
 
   return (
     <motion.div
@@ -45,7 +53,6 @@ const HomePage = () => {
     >
       <Navbar />
       
-      {/* Products Section */}
       <div className="products-section">
         <h2>{t('home.featuredProducts')}</h2>
         <div className="product-grid">
@@ -77,7 +84,6 @@ const HomePage = () => {
         </div>
       </div>
       
-      {/* Footer */}
       <footer className="home-footer">
         <p>{t('home.footerText')}</p>
       </footer>

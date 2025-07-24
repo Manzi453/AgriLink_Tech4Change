@@ -10,7 +10,6 @@ i18n
           welcome: "Welcome to AgriLink Rwanda",
           login: "Login",
           signupLabel: "Sign Up",
-         
           auth: {
             title: "Login / Sign up",
             emailPlaceholder: "Email",
@@ -64,7 +63,9 @@ i18n
             save: "Save",
             update: "Update",
             cancel: "Cancel",
-            available: "Available"
+            available: "Available",
+            publish: "Publish",
+            unpublish: "Unpublish"
           },
           settings: {
             profile: "Profile",
@@ -149,7 +150,9 @@ i18n
             save: "Enregistrer",
             update: "Mettre à jour",
             cancel: "Annuler",
-            available: "Disponible"
+            available: "Disponible",
+            publish: "Publier",
+            unpublish: "Dépublier"
           },
           settings: {
             profile: "Profil",
@@ -234,7 +237,9 @@ i18n
             save: "Bika",
             update: "Kuvugurura",
             cancel: "Kureka",
-            available: "Bihari"
+            available: "Bihari",
+            publish: "Tangaza",
+            unpublish: "Kureka kutangaza"
           },
           settings: {
             profile: "Profayili",
@@ -244,8 +249,7 @@ i18n
             security: "Umutekano",
             changePassword: "Hindura ijambobanga",
             configure: "Gushiraho",
-            update: "Kuvugurura",
-            
+            update: "Kuvugurura"
           },
           appName: "AGRILINK",
           units: {
@@ -267,9 +271,7 @@ i18n
     fallbackLng: "en",
     interpolation: {
       escapeValue: false
-    },
-    // In your translation files (en.json, fr.json, etc.)
-
-});
+    }
+  });
 
 export default i18n;
