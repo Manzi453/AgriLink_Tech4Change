@@ -1,57 +1,37 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const AuthPage = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
 
-  const handleLogin = (e) => {
+  const handleChange = (e) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate('/dashboard');
+    try {
+      const response = await axios.post('https://your-backend-url.com/auth/login', formData);
+      localStorage.setItem('token', response.data.token);
+      navigate('/dashboard');
+    } catch (err) {
+      setError('Invalid email or password');
+    }
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="page-container"
-    >
-      <motion.div 
-        className="dark-card"
-        initial={{ y: 20 }}
-        animate={{ y: 0 }}
-      >
-        <h1>{t('auth.title')}</h1>
-        <form onSubmit={handleLogin}>
-          <input
-            type="email"
-            placeholder={t('auth.emailPlaceholder')}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder={t('auth.passwordPlaceholder')}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button type="submit">{t('auth.loginButton')}</button>
-        </form>
-        <p className="form-footer">
-          {t('auth.noAccount')} <Link to="/signup">{t('auth.createAccount')}</Link>
-        </p>
-        <p className="form-footer">
-          {t('auth.farmerQuestion')} <Link to="/membership">{t('auth.requestMembership')}</Link>
-        </p>
-      </motion.div>
-    </motion.div>
+    <div className="auth-container">
+      <h2>Login</h2>
+      {error && <p className="error">{error}</p>}
+      <form onSubmit={handleSubmit}>
+        <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required />
+        <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" required />
+        <button type="submit">Login</button>
+      </form>
+    </div>
   );
 };
 

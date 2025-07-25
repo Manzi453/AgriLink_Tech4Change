@@ -1,104 +1,55 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const MembershipPage = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    farmName: '',
+    fullName: '',
     location: '',
-    size: '',
-    crops: '',
+    farmName: '',
+    cropTypes: '',
     email: '',
-    phone: ''
+    phoneNumber: '',
+    password: ''
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate('/dashboard');
+    try {
+      const payload = {
+        ...formData,
+        type: "FARMER" // Enum value as expected in backend
+      };
+      await axios.post('https://your-backend-url.com/auth/apply/farmer', payload);
+      alert("Membership request submitted!");
+      navigate('/dashboard');
+    } catch (err) {
+      alert("Submission failed. Please try again.");
+    }
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="page-container"
-    >
-      <motion.div 
-        className="dark-card"
-        initial={{ y: 20 }}
-        animate={{ y: 0 }}
-      >
-        <h1>{t('membership.title')}</h1>
-        <p className="subtitle">{t('membership.subtitle')}</p>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="farmName"
-            placeholder={t('membership.farmNamePlaceholder')}
-            value={formData.farmName}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="text"
-            name="location"
-            placeholder={t('membership.locationPlaceholder')}
-            value={formData.location}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="text"
-            name="size"
-            placeholder={t('membership.sizePlaceholder')}
-            value={formData.size}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="text"
-            name="crops"
-            placeholder={t('membership.cropsPlaceholder')}
-            value={formData.crops}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder={t('membership.emailPlaceholder')}
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="tel"
-            name="phone"
-            placeholder={t('membership.phonePlaceholder')}
-            value={formData.phone}
-            onChange={handleChange}
-            required
-          />
-          <button type="submit">{t('membership.submitButton')}</button>
-        </form>
-        <p className="form-footer">
-          {t('membership.alreadyMember')} <Link to="/dashboard">{t('membership.loginInstead')}</Link>
-        </p>
-      </motion.div>
-    </motion.div>
+    <div className="form-container">
+      <h2>Request Membership</h2>
+      <form onSubmit={handleSubmit}>
+        <input name="fullName" placeholder="Full Name" onChange={handleChange} required />
+        <input name="email" type="email" placeholder="Email" onChange={handleChange} required />
+        <input name="password" type="password" placeholder="Password" onChange={handleChange} required />
+        <input name="phoneNumber" placeholder="Phone Number" onChange={handleChange} required />
+        <input name="location" placeholder="Location" onChange={handleChange} required />
+        <input name="farmName" placeholder="Farm Name" onChange={handleChange} required />
+        <input name="cropTypes" placeholder="Crop Types (e.g. maize, beans)" onChange={handleChange} required />
+        <button type="submit">Submit</button>
+      </form>
+    </div>
   );
 };
 
 export default MembershipPage;
+
