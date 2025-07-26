@@ -7,10 +7,17 @@ i18n
     resources: {
       en: {
         translation: {
+          roles: {
+            farmer: "Farmer",
+            client: "Client",
+            admin: "Admin"
+          },
           welcome: "Welcome to AgriLink Rwanda",
           login: "Login",
           signupLabel: "Sign Up",
           auth: {
+            loginAs: "Login As",
+            noAccount: "Don't have an account?",
             title: "Login / Sign up",
             emailPlaceholder: "Email",
             passwordPlaceholder: "Password",
@@ -18,7 +25,18 @@ i18n
             createAccount: "Create an account",
             farmerQuestion: "Are you a farmer?",
             requestMembership: "Request membership",
-            noAccount: "Don't have an account?"
+            signupTitle: "Create Account",
+            loginTitle: "Welcome Back",
+            signupSubtitle: "Join our farming community",
+            loginSubtitle: "Sign in to continue",
+            fullName: "Full Name",
+            confirmPasswordPlaceholder: "Confirm Password",
+            signupButton: "Sign Up",
+            haveAccount: "Already have an account?",
+            signupLink: "Sign Up",
+            loginLink: "Login",
+            passwordsDontMatch: "Passwords do not match",
+            passwordLength: "Password must be at least 6 characters"
           },
           signup: {
             title: "Create Account",
@@ -44,6 +62,31 @@ i18n
             loginInstead: "Login here"
           },
           dashboard: {
+            clientDashboard: "Client Dashboard",
+            adminDashboard: "Admin Dashboard",
+            orderHistory: "Order History",
+            favorites: "Favorite Products",
+            viewPastOrders: "View your past orders",
+            savedProducts: "Your saved products",
+            market: "Marketplace",
+            browseProducts: "Browse available products",
+            payment: "Payment Methods",
+            managePayments: "Manage your payment options",
+            manageUsers: "Manage Users",
+            manageProducts: "Manage Products",
+            analytics: "Analytics",
+            name: "Name",
+            email: "Email",
+            status: "Status",
+            actions: "Actions",
+            product: "Product",
+            approve: "Approve",
+            reject: "Reject",
+            view: "View",
+            totalUsers: "Total Users",
+            activeProducts: "Active Products",
+            monthlySales: "Monthly Sales",
+            pendingApprovals: "Pending Approvals",
             greeting: "Hello, Farmer!",
             dashboard: "Dashboard",
             settings: "Settings",
@@ -65,7 +108,8 @@ i18n
             cancel: "Cancel",
             available: "Available",
             publish: "Publish",
-            unpublish: "Unpublish"
+            unpublish: "Unpublish",
+            myDashboard: "My Dashboard"
           },
           settings: {
             profile: "Profile",
@@ -94,10 +138,17 @@ i18n
       },
       fr: {
         translation: {
+          roles: {
+            farmer: "Agriculteur",
+            client: "Client",
+            admin: "Administrateur"
+          },
           welcome: "Bienvenue à AgriLink Rwanda",
           login: "Connexion",
           signupLabel: "S'inscrire",
           auth: {
+            loginAs: "Connectez-vous en tant que",
+            noAccount: "Vous n'avez pas de compte?",
             title: "Connexion / Inscription",
             emailPlaceholder: "Email",
             passwordPlaceholder: "Mot de passe",
@@ -105,7 +156,18 @@ i18n
             createAccount: "Créer un compte",
             farmerQuestion: "Êtes-vous agriculteur?",
             requestMembership: "Demander une adhésion",
-            noAccount: "Vous n'avez pas de compte?"
+            signupTitle: "Créer un compte",
+            loginTitle: "Bienvenue",
+            signupSubtitle: "Rejoignez notre communauté agricole",
+            loginSubtitle: "Connectez-vous pour continuer",
+            fullName: "Nom complet",
+            confirmPasswordPlaceholder: "Confirmer le mot de passe",
+            signupButton: "S'inscrire",
+            haveAccount: "Vous avez déjà un compte?",
+            signupLink: "S'inscrire",
+            loginLink: "Connexion",
+            passwordsDontMatch: "Les mots de passe ne correspondent pas",
+            passwordLength: "Le mot de passe doit contenir au moins 6 caractères"
           },
           signup: {
             title: "Créer un compte",
@@ -131,6 +193,31 @@ i18n
             loginInstead: "Connectez-vous ici"
           },
           dashboard: {
+            clientDashboard: "Tableau de bord client",
+            adminDashboard: "Tableau de bord administrateur",
+            orderHistory: "Historique des commandes",
+            favorites: "Produits préférés",
+            viewPastOrders: "Voir vos commandes passées",
+            savedProducts: "Vos produits enregistrés",
+            market: "Marché",
+            browseProducts: "Parcourir les produits disponibles",
+            payment: "Méthodes de paiement",
+            managePayments: "Gérer vos options de paiement",
+            manageUsers: "Gérer les utilisateurs",
+            manageProducts: "Gérer les produits",
+            analytics: "Analytique",
+            name: "Nom",
+            email: "E-mail",
+            status: "Statut",
+            actions: "Actions",
+            product: "Produit",
+            approve: "Approuver",
+            reject: "Rejeter",
+            view: "Voir",
+            totalUsers: "Nombre total d'utilisateurs",
+            activeProducts: "Produits actifs",
+            monthlySales: "Ventes mensuelles",
+            pendingApprovals: "Approbations en attente",
             greeting: "Bonjour, Agriculteur!",
             dashboard: "Tableau de bord",
             settings: "Paramètres",
@@ -152,7 +239,8 @@ i18n
             cancel: "Annuler",
             available: "Disponible",
             publish: "Publier",
-            unpublish: "Dépublier"
+            unpublish: "Dépublier",
+            myDashboard: "Mon tableau de bord"
           },
           settings: {
             profile: "Profil",
@@ -181,10 +269,17 @@ i18n
       },
       rw: {
         translation: {
+          roles: {
+            farmer: "Umuhinzi",
+            client: "Umukiriya",
+            admin: "Umuyobozi"
+          },
           welcome: "Murakaza neza kuri AgriLink Rwanda",
           login: "Injira",
           signupLabel: "Iyandikishe",
           auth: {
+            loginAs: "Injira nk'",
+            noAccount: "Nta konti ufite?",
             title: "Injira / Iyandikishe",
             emailPlaceholder: "Imeri",
             passwordPlaceholder: "Ijambobanga",
@@ -192,7 +287,18 @@ i18n
             createAccount: "Kora konti",
             farmerQuestion: "Uri umuhinzi?",
             requestMembership: "Saba ubumemberi",
-            noAccount: "Nta konti ufite?"
+            signupTitle: "Kora Konti",
+            loginTitle: "Murakaza",
+            signupSubtitle: "Dora umuryango w'abahinzi",
+            loginSubtitle: "Injira komeza",
+            fullName: "Amazina yose",
+            confirmPasswordPlaceholder: "Emeza ijambobanga",
+            signupButton: "Iyandikishe",
+            haveAccount: "Urafite konti?",
+            signupLink: "Iyandikishe",
+            loginLink: "Injira",
+            passwordsDontMatch: "Ijambobanga ntibihuye",
+            passwordLength: "Ijambobanga rigomba kuba rirenze inyuguti 6"
           },
           signup: {
             title: "Kora Konti",
@@ -218,6 +324,31 @@ i18n
             loginInstead: "Injira hano"
           },
           dashboard: {
+            clientDashboard: "Ikibaho cy'Umukiriya",
+            adminDashboard: "Ikibaho cy'Umuyobozi",
+            orderHistory: "Amateka y'ibyatanzwe",
+            favorites: "Ibicuruzwa byakunzwe",
+            viewPastOrders: "Reba ibyatanzwe byawe byashize",
+            savedProducts: "Ibicuruzwa byawe byabitswe",
+            market: "Isoko",
+            browseProducts: "Shakisha ibicuruzwa biriho",
+            payment: "Uburyo bwo kwishyura",
+            managePayments: "Gucunga uburyo bwawe bwo kwishyura",
+            manageUsers: "Gucunga Abakoresha",
+            manageProducts: "Gucunga Ibicuruzwa",
+            analytics: "Ibisubizo",
+            name: "Izina",
+            email: "Imeri",
+            status: "Imiterere",
+            actions: "Ibikorwa",
+            product: "Igicuruzwa",
+            approve: "Emeza",
+            reject: "Wange",
+            view: "Reba",
+            totalUsers: "Abakoresha Bose",
+            activeProducts: "Ibicuruzwa Bikora",
+            monthlySales: "Kugurisha kwezi",
+            pendingApprovals: "Ibyemezo birindirije",
             greeting: "Mwaramutse, Muhinzi!",
             dashboard: "Ikibaho",
             settings: "Igenamiterere",
@@ -239,7 +370,8 @@ i18n
             cancel: "Kureka",
             available: "Bihari",
             publish: "Tangaza",
-            unpublish: "Kureka kutangaza"
+            unpublish: "Kureka kutangaza",
+            myDashboard: "Ikibaho cyanjye"
           },
           settings: {
             profile: "Profayili",

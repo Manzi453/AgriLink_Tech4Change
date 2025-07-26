@@ -5,6 +5,7 @@ import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar = () => {
   const { t } = useTranslation();
+  const userRole = localStorage.getItem('userRole');
 
   return (
     <nav className="navbar">
@@ -17,8 +18,23 @@ const Navbar = () => {
         
         <div className="navbar-right">
           <div className="auth-buttons">
-            <Link to="/auth" className="login-btn">{t('login')}</Link>
-            <Link to="/signup" className="signup-btn">{t('signupLabel')}</Link>
+            {!userRole ? (
+              <>
+                <Link to="/auth" className="login-btn">{t('login')}</Link>
+                <Link to="/signup" className="signup-btn">{t('signupLabel')}</Link>
+              </>
+            ) : (
+              <Link 
+                to={
+                  userRole === 'farmer' ? '/farmer-dashboard' : 
+                  userRole === 'client' ? '/client-dashboard' : 
+                  '/admin-dashboard'
+                } 
+                className="dashboard-btn"
+              >
+                {/* {t('dashboard.myDashboard')} */}
+              </Link>
+            )}
           </div>
           <LanguageSwitcher />
         </div>
