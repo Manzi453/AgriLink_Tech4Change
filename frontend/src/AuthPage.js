@@ -1,7 +1,7 @@
 // src/AuthPage.js
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const AuthPage = () => {
@@ -144,7 +144,6 @@ const AuthPage = () => {
           )}
 
           <div className="form-group">
-
             <select
               name="role"
               value={formData.role}
@@ -168,13 +167,23 @@ const AuthPage = () => {
         </form>
 
         <div className="auth-footer">
-          {isLoginMode ? t('auth.noAccount') : t('auth.haveAccount')}
-          <button
-            className="auth-switch"
-            onClick={() => setIsLoginMode(!isLoginMode)}
-          >
-            {isLoginMode ? t('auth.signupLink') : t('auth.loginLink')}
-          </button>
+          <div>
+            {isLoginMode ? t('auth.noAccount') : t('auth.haveAccount')}
+            <button
+              className="auth-switch"
+              onClick={() => setIsLoginMode(!isLoginMode)}
+            >
+              {isLoginMode ? t('auth.signupLink') : t('auth.loginLink')}
+            </button>
+          </div>
+          {isLoginMode && (
+            <div className="farmer-membership-link">
+              {t('auth.areYouFarmer')} 
+              <Link to="/membership" className="membership-link">
+                {t('auth.requestMembership')}
+              </Link>
+            </div>
+          )}
         </div>
       </motion.div>
     </motion.div>

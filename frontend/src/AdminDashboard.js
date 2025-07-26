@@ -22,7 +22,7 @@ const AdminDashboard = () => {
   const [profile] = useState({
     name: 'Admin User',
     email: 'admin@example.com',
-    photo: '/images/default-profile.jpg'
+    // photo: '/images/default-profile.jpg'
   });
 
   return (
@@ -33,7 +33,7 @@ const AdminDashboard = () => {
     >
       <div className="dashboard-sidebar">
         <div className="sidebar-profile">
-          <img src={profile.photo} alt="Profile" className="sidebar-profile-photo" />
+          {/* <img src={profile.photo} alt="Profile" className="sidebar-profile-photo" /> */}
           <div className="sidebar-profile-info">
             <h4>{profile.name}</h4>
             <p>{profile.email}</p>
@@ -67,9 +67,7 @@ const AdminDashboard = () => {
               {t('dashboard.analytics')}
             </a>
           </li>
-          <li>
-            <a href="#settings">{t('dashboard.settings')}</a>
-          </li>
+          
           <li>
             <a href="#logout">{t('dashboard.logout')}</a>
           </li>

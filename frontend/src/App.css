@@ -220,7 +220,89 @@ body::before {
   position: relative;
   z-index: 1;
 }
+/* Auth Page Buttons */
+.auth-btn {
+  width: 100%;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  margin-top: 10px;
+}
 
+.auth-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.auth-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.auth-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.auth-btn:hover::after {
+  opacity: 1;
+}
+
+.auth-switch {
+  background: none;
+  border: none;
+  color: #4CAF50;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 5px;
+  margin-left: 5px;
+  transition: all 0.3s ease;
+  text-decoration: underline;
+  font-size: inherit;
+}
+
+.auth-switch:hover {
+  color: #2E7D32;
+  text-decoration: none;
+}
+
+/* Role select dropdown */
+.role-select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: white;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 15px;
+  margin-bottom: 15px;
+}
+
+.role-select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
 .form-header {
   text-align: center;
   margin-bottom: 2rem;
@@ -233,7 +315,425 @@ body::before {
   margin-bottom: 1rem;
   letter-spacing: 1px;
 }
+/* Add to App.css */
+.auth-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
 
+.farmer-membership-link {
+  text-align: center;
+  margin-top: 0.5rem;
+}
+/* WhatsApp-Style Chat Interface */
+  .chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: #e5ddd5;
+    font-family: 'Segoe UI', Helvetica, sans-serif;
+  }
+  
+  /* Header */
+  .chat-header {
+    padding: 10px 16px;
+    background: #075e54;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .chat-header-info {
+    flex: 1;
+  }
+  
+  .chat-title {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0;
+  }
+  
+  .chat-subtitle {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    margin: 2px 0 0;
+  }
+  
+  /* Date Separator */
+  .date-separator {
+    text-align: center;
+    margin: 15px 0;
+    position: relative;
+  }
+  
+  .date-separator span {
+    background: #e5ddd5;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    color: #333;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .date-separator::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #ccc;
+    z-index: 0;
+  }
+  
+  /* Encryption Notice */
+  .encryption-notice {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #666;
+    padding: 10px;
+    margin: 5px 20px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 8px;
+  }
+  
+  /* Messages */
+  .chat-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background-color: #45a049;
+    background-repeat: repeat;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .message {
+    max-width: 70%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    position: relative;
+    word-break: break-word;
+  }
+  
+  .message.received {
+    background: rgb(21, 133, 103);
+    align-self: flex-start;
+    border-top-left-radius: 0;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  }
+  
+  .message.sent {
+    background: #64de06ba;
+    align-self: flex-end;
+    border-top-right-radius: 0;
+  }
+  
+  .message-time {
+    font-size: 0.7rem;
+    color: #0a0505;
+    text-align: right;
+    margin-top: 2px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 3px;
+  }
+  
+  .message-time .checkmark {
+    color: #4fc3f7;
+  }
+  
+  /* Typing Area */
+  .message-input-container {
+    padding: 8px 10px;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+  }
+  
+  .message-input-form {
+    flex: 1;
+    display: flex;
+    background: white;
+    border-radius: 20px;
+    padding: 5px 10px;
+    align-items: center;
+  }
+  
+  .message-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 8px;
+    font-size: 0.95rem;
+    max-height: 100px;
+    resize: none;
+  }
+  
+  .attachment-btn, .emoji-btn {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 1.2rem;
+    padding: 5px;
+    cursor: pointer;
+  }
+  
+  .send-btn {
+    background: #075e54;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin-left: 5px;
+  }
+  
+  /* Scrollbar */
+  .chat-messages::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .chat-messages::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.05);
+  }
+  
+  .chat-messages::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.1);
+    border-radius: 3px;
+  }
+  
+/* Auth Page Buttons */
+.auth-btn {
+  width: 100%;
+  padding: 15px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.auth-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.auth-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.auth-btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.auth-btn:hover::after {
+  opacity: 1;
+}
+
+.auth-switch {
+  background: none;
+  border: none;
+  color: #4CAF50;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 5px;
+  margin-left: 5px;
+  transition: all 0.3s ease;
+  text-decoration: underline;
+  font-size: inherit;
+}
+
+.auth-switch:hover {
+  color: #2E7D32;
+  text-decoration: none;
+}
+
+/* Role select dropdown */
+.role-select {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: white;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 15px;
+  margin-bottom: 15px;
+}
+/* Add these styles to your existing CSS */
+
+/* Product Card Styles */
+.product-card {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Product Actions */
+.product-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.edit-button, 
+.delete-button,
+.publish-button {
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+}
+
+.edit-button {
+  background-color: #2196F3;
+  color: white;
+}
+
+.edit-button:hover {
+  background-color: #0b7dda;
+}
+
+.delete-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+.publish-button {
+  background-color: #4CAF50;
+  color: white;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.publish-button:hover {
+  background-color: #388E3C;
+}
+
+.publish-button.unpublished {
+  background-color: #FF9800;
+}
+
+.publish-button.unpublished:hover {
+  background-color: #F57C00;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.welcome-btn {
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.welcome-btn.cancel-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.welcome-btn.cancel-btn:hover {
+  background-color: #d32f2f;
+}
+
+/* Product Form */
+.product-form-container {
+  background-color: var(--dark-card-bg);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  box-shadow: var(--box-shadow);
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .product-actions {
+    flex-direction: column;
+  }
+  
+  .edit-button, 
+  .delete-button,
+  .publish-button {
+    width: 100%;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+}
+.role-select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+.membership-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 0.3rem;
+  transition: color 0.2s ease;
+}
+
+.membership-link:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
 .form-header h1 {
   font-size: 1.8rem;
   margin-bottom: 0.5rem;

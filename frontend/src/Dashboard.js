@@ -1,14 +1,13 @@
-// Dashboard.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
-import LanguageSwitcher from './LanguageSwitcher';
+
 
 function Dashboard() {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('dashboard');
   
-  // Sample products data
+  // Sample products data with published status
   const [products, setProducts] = useState([
     {
       id: 1,
@@ -16,7 +15,8 @@ function Dashboard() {
       image: "/images/maize.jpg",
       quantity: "30",
       price: "200",
-      farmer: "John Doe"
+      farmer: "John Doe",
+      published: true
     },
     {
       id: 2,
@@ -24,7 +24,8 @@ function Dashboard() {
       image: "/images/beans.jpg",
       quantity: "10",
       price: "450",
-      farmer: "Jane Smith"
+      farmer: "Jane Smith",
+      published: false
     },
     {
       id: 3,
@@ -32,33 +33,37 @@ function Dashboard() {
       image: "/images/potatoes.jpg",
       quantity: "25",
       price: "250",
-      farmer: "Robert Johnson"
+      farmer: "Robert Johnson",
+      published: true
     }
   ]);
-
-  // Settings states
-  const [profile, setProfile] = useState({
-    name: 'John Doe',
-    email: 'john@example.com',
-    phone: '+250 78 123 4567',
-    location: 'Kigali, Rwanda',
-    photo: '/images/default-profile.jpg'
-  });
   
-  const [notifications, setNotifications] = useState({
-    emailNotifications: true,
-    smsNotifications: false,
-    priceAlerts: true,
-    newCropAlerts: true
-  });
+  // Chat states
+  const [messages, setMessages] = useState([
+    {
+      id: 1,
+      sender: 'Jane Smith',
+      content: 'Has anyone tried the new organic fertilizer?',
+      timestamp: new Date(Date.now() - 3600000).toISOString(),
+      isCurrentUser: false
+    },
+    {
+      id: 2,
+      sender: 'John Doe',
+      content: 'Yes! It increased my maize yield by 20%',
+      timestamp: new Date(Date.now() - 1800000).toISOString(),
+      isCurrentUser: true
+    },
+    {
+      id: 3,
+      sender: 'Robert Johnson',
+      content: 'Where can I buy it?',
+      timestamp: new Date(Date.now() - 900000).toISOString(),
+      isCurrentUser: false
+    }
+  ]);
   
-  const [security, setSecurity] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
-  });
-  
-  const [activeSetting, setActiveSetting] = useState('profile');
+  const [newMessage, setNewMessage] = useState('');
   const [showProductForm, setShowProductForm] = useState(false);
   const [newProduct, setNewProduct] = useState({
     name: "",
@@ -68,29 +73,15 @@ function Dashboard() {
     farmer: "Current User"
   });
 
-  // Handler functions
-  const handleProfileChange = (e) => {
-    const { name, value } = e.target;
-    setProfile(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handlePhotoChange = (e) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      const photoUrl = URL.createObjectURL(file);
-      setProfile(prev => ({ ...prev, photo: photoUrl }));
+  // Scroll to bottom of chat when messages change
+  useEffect(() => {
+    if (activeTab === 'messages') {
+      const messagesContainer = document.querySelector('.chat-messages');
+      if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
     }
-  };
-
-  const handleNotificationChange = (e) => {
-    const { name, checked } = e.target;
-    setNotifications(prev => ({ ...prev, [name]: checked }));
-  };
-
-  const handleSecurityChange = (e) => {
-    const { name, value } = e.target;
-    setSecurity(prev => ({ ...prev, [name]: value }));
-  };
+  }, [messages, activeTab]);
 
   const handleProductInputChange = (e) => {
     const { name, value } = e.target;
@@ -108,7 +99,11 @@ function Dashboard() {
   const handleSubmitProduct = (e) => {
     e.preventDefault();
     const newId = Math.max(...products.map(p => p.id)) + 1;
-    setProducts([...products, { ...newProduct, id: newId }]);
+    setProducts([...products, { 
+      ...newProduct, 
+      id: newId,
+      published: false
+    }]);
     setShowProductForm(false);
     setNewProduct({
       name: "",
@@ -123,9 +118,32 @@ function Dashboard() {
     setProducts(products.filter(p => p.id !== productId));
   };
 
-  const handleSubmitSettings = (e, section) => {
+  const handlePublishProduct = (productId) => {
+    setProducts(products.map(product => 
+      product.id === productId 
+        ? { ...product, published: !product.published } 
+        : product
+    ));
+  };
+
+  const handleSendMessage = (e) => {
     e.preventDefault();
-    alert(`${section} settings updated successfully!`);
+    if (newMessage.trim() === '') return;
+
+    const newMsg = {
+      id: messages.length + 1,
+      sender: "Current User",
+      content: newMessage,
+      timestamp: new Date().toISOString(),
+      isCurrentUser: true
+    };
+
+    setMessages([...messages, newMsg]);
+    setNewMessage('');
+  };
+
+  const handleMessageChange = (e) => {
+    setNewMessage(e.target.value);
   };
 
   return (
@@ -136,10 +154,9 @@ function Dashboard() {
     >
       <div className="dashboard-sidebar">
         <div className="sidebar-profile">
-          <img src={profile.photo} alt="Profile" className="sidebar-profile-photo" />
           <div className="sidebar-profile-info">
-            <h4>{profile.name}</h4>
-            <p>{profile.email}</p>
+            <h4>Current User</h4>
+            <p>user@example.com</p>
           </div>
         </div>
         <ul>
@@ -166,15 +183,10 @@ function Dashboard() {
           </li>
           <li>
             <a 
-              href="#settings" 
-              onClick={() => setActiveTab('settings')} 
-              className={activeTab === 'settings' ? 'active' : ''}
+              href="#messages" 
+              onClick={() => setActiveTab('messages')} 
+              className={activeTab === 'messages' ? 'active' : ''}
             >
-              {t('dashboard.settings')}
-            </a>
-          </li>
-          <li>
-            <a href="#messages">
               {t('dashboard.messages')}
             </a>
           </li>
@@ -194,9 +206,9 @@ function Dashboard() {
       <div className="dashboard-main">
         {activeTab === 'dashboard' && (
           <>
-            <h1>{t('dashboard.greeting')}</h1>
+            <h1>{t('dashboard.greeting')}, Current User!</h1>
             <div className="product-feed">
-              {products.map(product => (
+              {products.filter(p => p.published).map(product => (
                 <motion.div 
                   className="product-card" 
                   key={product.id}
@@ -338,6 +350,14 @@ function Dashboard() {
                       >
                         {t('dashboard.delete')}
                       </motion.button>
+                      <motion.button
+                        className={`publish-button ${product.published ? '' : 'unpublished'}`}
+                        onClick={() => handlePublishProduct(product.id)}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        {product.published ? t('dashboard.published') : t('dashboard.publish')}
+                      </motion.button>
                     </div>
                   </motion.div>
                 ))}
@@ -346,250 +366,44 @@ function Dashboard() {
           </>
         )}
 
-        {activeTab === 'settings' && (
-          <div className="settings-container">
-            <div className="settings-sidebar">
-              <h3>{t('settings.settingsMenu')}</h3>
-              <ul>
-                <li 
-                  className={activeSetting === 'profile' ? 'active' : ''}
-                  onClick={() => setActiveSetting('profile')}
-                >
-                  {t('settings.profile')}
-                </li>
-                <li 
-                  className={activeSetting === 'notifications' ? 'active' : ''}
-                  onClick={() => setActiveSetting('notifications')}
-                >
-                  {t('settings.notifications')}
-                </li>
-                <li 
-                  className={activeSetting === 'security' ? 'active' : ''}
-                  onClick={() => setActiveSetting('security')}
-                >
-                  {t('settings.security')}
-                </li>
-                <li 
-                  className={activeSetting === 'preferences' ? 'active' : ''}
-                  onClick={() => setActiveSetting('preferences')}
-                >
-                  {t('settings.preferences')}
-                </li>
-              </ul>
+        {activeTab === 'messages' && (
+          <div className="community-chat-container">
+            <div className="chat-header">
+              <h2>{t('dashboard.messages')}</h2>
             </div>
-
-            <div className="settings-content">
-              {activeSetting === 'profile' && (
+            
+            <div className="chat-messages">
+              {messages.map((message) => (
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="settings-card"
+                  key={message.id}
+                  className={`message ${message.isCurrentUser ? 'sent' : 'received'}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
                 >
-                  <h3>{t('settings.profile')}</h3>
-                  <form onSubmit={(e) => handleSubmitSettings(e, 'profile')}>
-                    <div className="profile-photo-section">
-                      <div className="profile-photo-container">
-                        <img 
-                          src={profile.photo} 
-                          alt="Profile" 
-                          className="profile-photo"
-                        />
-                        <div className="photo-actions">
-                          <label className="photo-upload-btn">
-                            {t('settings.changePhoto')}
-                            <input
-                              type="file"
-                              accept="image/*"
-                              onChange={handlePhotoChange}
-                              style={{ display: 'none' }}
-                            />
-                          </label>
-                          {profile.photo !== '/images/default-profile.jpg' && (
-                            <button 
-                              type="button" 
-                              className="photo-remove-btn"
-                              onClick={() => setProfile(prev => ({
-                                ...prev,
-                                photo: '/images/default-profile.jpg'
-                              }))}
-                            >
-                              {t('settings.removePhoto')}
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <label>{t('settings.fullName')}</label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={profile.name}
-                        onChange={handleProfileChange}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>{t('settings.email')}</label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={profile.email}
-                        onChange={handleProfileChange}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>{t('settings.phone')}</label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={profile.phone}
-                        onChange={handleProfileChange}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>{t('settings.location')}</label>
-                      <input
-                        type="text"
-                        name="location"
-                        value={profile.location}
-                        onChange={handleProfileChange}
-                      />
-                    </div>
-                    <button type="submit" className="save-btn">
-                      {t('settings.updateProfile')}
-                    </button>
-                  </form>
-                </motion.div>
-              )}
-
-              {activeSetting === 'notifications' && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="settings-card"
-                >
-                  <h3>{t('settings.notifications')}</h3>
-                  <form onSubmit={(e) => handleSubmitSettings(e, 'notifications')}>
-                    <div className="toggle-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="emailNotifications"
-                          checked={notifications.emailNotifications}
-                          onChange={handleNotificationChange}
-                        />
-                        <span>{t('settings.emailNotifications')}</span>
-                      </label>
-                    </div>
-                    <div className="toggle-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="smsNotifications"
-                          checked={notifications.smsNotifications}
-                          onChange={handleNotificationChange}
-                        />
-                        <span>{t('settings.smsNotifications')}</span>
-                      </label>
-                    </div>
-                    <div className="toggle-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="priceAlerts"
-                          checked={notifications.priceAlerts}
-                          onChange={handleNotificationChange}
-                        />
-                        <span>{t('settings.priceAlerts')}</span>
-                      </label>
-                    </div>
-                    <div className="toggle-group">
-                      <label>
-                        <input
-                          type="checkbox"
-                          name="newCropAlerts"
-                          checked={notifications.newCropAlerts}
-                          onChange={handleNotificationChange}
-                        />
-                        <span>{t('settings.newCropAlerts')}</span>
-                      </label>
-                    </div>
-                    <button type="submit" className="save-btn">
-                      {t('settings.saveNotifications')}
-                    </button>
-                  </form>
-                </motion.div>
-              )}
-
-              {activeSetting === 'security' && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="settings-card"
-                >
-                  <h3>{t('settings.security')}</h3>
-                  <form onSubmit={(e) => handleSubmitSettings(e, 'security')}>
-                    <div className="form-group">
-                      <label>{t('settings.currentPassword')}</label>
-                      <input
-                        type="password"
-                        name="currentPassword"
-                        value={security.currentPassword}
-                        onChange={handleSecurityChange}
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>{t('settings.newPassword')}</label>
-                      <input
-                        type="password"
-                        name="newPassword"
-                        value={security.newPassword}
-                        onChange={handleSecurityChange}
-                        required
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>{t('settings.confirmPassword')}</label>
-                      <input
-                        type="password"
-                        name="confirmPassword"
-                        value={security.confirmPassword}
-                        onChange={handleSecurityChange}
-                        required
-                      />
-                    </div>
-                    <button type="submit" className="save-btn">
-                      {t('settings.changePassword')}
-                    </button>
-                  </form>
-                </motion.div>
-              )}
-
-              {activeSetting === 'preferences' && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="settings-card"
-                >
-                  <h3>{t('settings.preferences')}</h3>
-                  <div className="preferences-grid">
-                    <div className="preference-item">
-                      <h4>{t('settings.language')}</h4>
-                      <LanguageSwitcher />
-                    </div>
-                    <div className="preference-item">
-                      <h4>{t('settings.theme')}</h4>
-                      <div className="theme-options">
-                        <button className="theme-light">Light</button>
-                        <button className="theme-dark active">Dark</button>
-                        <button className="theme-system">System</button>
-                      </div>
-                    </div>
+                  {!message.isCurrentUser && (
+                    <div className="message-sender">{message.sender}</div>
+                  )}
+                  <div className="message-content">
+                    <p>{message.content}</p>
+                  </div>
+                  <div className="message-time">
+                    {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </div>
                 </motion.div>
-              )}
+              ))}
             </div>
+            
+            <form onSubmit={handleSendMessage} className="chat-input">
+              <input
+                type="text"
+                value={newMessage}
+                onChange={handleMessageChange}
+                placeholder={t('dashboard.typeMessage')}
+              />
+              <button type="submit" disabled={!newMessage.trim()}>
+                <i className="fas fa-paper-plane"></i>
+              </button>
+            </form>
           </div>
         )}
       </div>

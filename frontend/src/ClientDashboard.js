@@ -9,7 +9,7 @@ const ClientDashboard = () => {
   const [profile] = useState({
     name: 'Client User',
     email: 'client@example.com',
-    photo: '/images/default-profile.jpg'
+    // photo: '/images/default-profile.jpg'
   });
 
   return (
@@ -20,7 +20,7 @@ const ClientDashboard = () => {
     >
       <div className="dashboard-sidebar">
         <div className="sidebar-profile">
-          <img src={profile.photo} alt="Profile" className="sidebar-profile-photo" />
+          {/* <img src={profile.photo} alt="Profile" className="sidebar-profile-photo" /> */}
           <div className="sidebar-profile-info">
             <h4>{profile.name}</h4>
             <p>{profile.email}</p>
@@ -63,9 +63,7 @@ const ClientDashboard = () => {
               {t('dashboard.payment')}
             </a>
           </li>
-          <li>
-            <a href="#settings">{t('dashboard.settings')}</a>
-          </li>
+          
           <li>
             <a href="#logout">{t('dashboard.logout')}</a>
           </li>
