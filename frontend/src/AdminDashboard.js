@@ -19,38 +19,65 @@ const AdminDashboard = () => {
     { id: 3, name: 'Potatoes', farmer: 'Robert Johnson', status: 'Approved' }
   ]);
 
+  const [profile] = useState({
+    name: 'Admin User',
+    email: 'admin@example.com',
+    photo: '/images/default-profile.jpg'
+  });
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="dashboard-container"
     >
+      <div className="dashboard-sidebar">
+        <div className="sidebar-profile">
+          <img src={profile.photo} alt="Profile" className="sidebar-profile-photo" />
+          <div className="sidebar-profile-info">
+            <h4>{profile.name}</h4>
+            <p>{profile.email}</p>
+          </div>
+        </div>
+        <ul>
+          <li>
+            <a 
+              href="#users" 
+              onClick={() => setActiveTab('users')} 
+              className={activeTab === 'users' ? 'active' : ''}
+            >
+              {t('dashboard.manageUsers')}
+            </a>
+          </li>
+          <li>
+            <a 
+              href="#products" 
+              onClick={() => setActiveTab('products')} 
+              className={activeTab === 'products' ? 'active' : ''}
+            >
+              {t('dashboard.manageProducts')}
+            </a>
+          </li>
+          <li>
+            <a 
+              href="#analytics" 
+              onClick={() => setActiveTab('analytics')} 
+              className={activeTab === 'analytics' ? 'active' : ''}
+            >
+              {t('dashboard.analytics')}
+            </a>
+          </li>
+          <li>
+            <a href="#settings">{t('dashboard.settings')}</a>
+          </li>
+          <li>
+            <a href="#logout">{t('dashboard.logout')}</a>
+          </li>
+        </ul>
+      </div>
+
       <div className="dashboard-main">
         <h1>{t('dashboard.adminDashboard')}</h1>
-        
-        <div className="admin-tabs">
-          <motion.button
-            className={activeTab === 'users' ? 'active' : ''}
-            onClick={() => setActiveTab('users')}
-            whileHover={{ scale: 1.05 }}
-          >
-            {t('dashboard.manageUsers')}
-          </motion.button>
-          <motion.button
-            className={activeTab === 'products' ? 'active' : ''}
-            onClick={() => setActiveTab('products')}
-            whileHover={{ scale: 1.05 }}
-          >
-            {t('dashboard.manageProducts')}
-          </motion.button>
-          <motion.button
-            className={activeTab === 'analytics' ? 'active' : ''}
-            onClick={() => setActiveTab('analytics')}
-            whileHover={{ scale: 1.05 }}
-          >
-            {t('dashboard.analytics')}
-          </motion.button>
-        </div>
         
         {activeTab === 'users' && (
           <div className="admin-section">
@@ -73,8 +100,20 @@ const AdminDashboard = () => {
                       <td>{user.role}</td>
                       <td>{user.status}</td>
                       <td>
-                        <button className="edit-btn">{t('dashboard.edit')}</button>
-                        <button className="delete-btn">{t('dashboard.delete')}</button>
+                        <motion.button 
+                          className="edit-btn"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          {t('dashboard.edit')}
+                        </motion.button>
+                        <motion.button 
+                          className="delete-btn"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          {t('dashboard.delete')}
+                        </motion.button>
                       </td>
                     </tr>
                   ))}
@@ -105,11 +144,29 @@ const AdminDashboard = () => {
                       <td>
                         {product.status === 'Pending' && (
                           <>
-                            <button className="approve-btn">{t('dashboard.approve')}</button>
-                            <button className="reject-btn">{t('dashboard.reject')}</button>
+                            <motion.button 
+                              className="approve-btn"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              {t('dashboard.approve')}
+                            </motion.button>
+                            <motion.button 
+                              className="reject-btn"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                            >
+                              {t('dashboard.reject')}
+                            </motion.button>
                           </>
                         )}
-                        <button className="view-btn">{t('dashboard.view')}</button>
+                        <motion.button 
+                          className="view-btn"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          {t('dashboard.view')}
+                        </motion.button>
                       </td>
                     </tr>
                   ))}
@@ -120,37 +177,35 @@ const AdminDashboard = () => {
         )}
         
         {activeTab === 'analytics' && (
-          <div className="admin-section">
-            <div className="analytics-grid">
-              <motion.div 
-                className="analytics-card"
-                whileHover={{ scale: 1.03 }}
-              >
-                <h3>{t('dashboard.totalUsers')}</h3>
-                <p className="stat">1,248</p>
-              </motion.div>
-              <motion.div 
-                className="analytics-card"
-                whileHover={{ scale: 1.03 }}
-              >
-                <h3>{t('dashboard.activeProducts')}</h3>
-                <p className="stat">586</p>
-              </motion.div>
-              <motion.div 
-                className="analytics-card"
-                whileHover={{ scale: 1.03 }}
-              >
-                <h3>{t('dashboard.monthlySales')}</h3>
-                <p className="stat">RWF 12,450,000</p>
-              </motion.div>
-              <motion.div 
-                className="analytics-card"
-                whileHover={{ scale: 1.03 }}
-              >
-                <h3>{t('dashboard.pendingApprovals')}</h3>
-                <p className="stat">24</p>
-              </motion.div>
-            </div>
+          <div className="analytics-grid">
+            <motion.div 
+              className="analytics-card"
+              whileHover={{ scale: 1.03 }}
+            >
+              <h3>{t('dashboard.totalUsers')}</h3>
+              <p className="stat">1,248</p>
+            </motion.div>
+            <motion.div 
+              className="analytics-card"
+              whileHover={{ scale: 1.03 }}
+            >
+              <h3>{t('dashboard.activeProducts')}</h3>
+              <p className="stat">586</p>
+            </motion.div>
+            <motion.div 
+              className="analytics-card"
+              whileHover={{ scale: 1.03 }}
+            >
+              <h3>{t('dashboard.monthlySales')}</h3>
+              <p className="stat">RWF 12,450,000</p>
+            </motion.div>
+            <motion.div 
+              className="analytics-card"
+              whileHover={{ scale: 1.03 }}
+            >
+              <h3>{t('dashboard.pendingApprovals')}</h3>
+              <p className="stat">24</p>
+            </motion.div>
           </div>
         )}
       </div>

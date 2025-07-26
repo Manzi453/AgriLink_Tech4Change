@@ -12,7 +12,137 @@
   --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
   --sidebar-width: 250px;
 }
+/* Admin Dashboard Styles */
+.admin-section {
+  background-color: var(--dark-card-bg);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--card-border);
+}
 
+.admin-table {
+  overflow-x: auto;
+}
+
+.admin-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th, 
+.admin-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.admin-table th {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: var(--primary-color);
+}
+
+.admin-table tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.edit-btn, .delete-btn, .approve-btn, .reject-btn, .view-btn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  border: none;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.edit-btn {
+  background-color: #2196F3;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.approve-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.reject-btn {
+  background-color: #ff9800;
+  color: white;
+}
+
+.view-btn {
+  background-color: #9c27b0;
+  color: white;
+}
+
+/* Analytics Cards */
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.analytics-card {
+  background-color: var(--dark-card-bg);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--card-border);
+  text-align: center;
+}
+
+.analytics-card h3 {
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.analytics-card .stat {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+/* Client Dashboard Styles */
+.client-section {
+  background-color: var(--dark-card-bg);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  box-shadow: var(--box-shadow);
+  border: 1px solid var(--card-border);
+}
+
+.placeholder-content {
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: var(--border-radius);
+  color: var(--text-muted);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .admin-table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+}
 /* Base Styles */
 * {
   margin: 0;
