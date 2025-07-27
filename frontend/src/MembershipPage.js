@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 const MembershipPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     fullName: '',
     location: '',
@@ -28,9 +29,14 @@ const MembershipPage = () => {
     try {
       const payload = {
         ...formData,
-        type: "FARMER"
+        type: 'FARMER'
       };
-      await axios.post('https://your-backend-url.com/auth/apply/farmer', payload);
+
+      await axios.post(
+        'https://agrilink-backend-production.up.railway.app/agriConnect/auth/apply/farmer',
+        payload
+      );
+
       alert(t('membership.submissionSuccess'));
       navigate('/auth');
     } catch (err) {
@@ -79,9 +85,6 @@ const MembershipPage = () => {
               onChange={handleChange}
               required
             />
-            <div className="input-icon">
-              <i className="fas fa-user"></i>
-            </div>
           </div>
 
           <div className="form-group">
@@ -93,9 +96,6 @@ const MembershipPage = () => {
               onChange={handleChange}
               required
             />
-            <div className="input-icon">
-              <i className="fas fa-envelope"></i>
-            </div>
           </div>
 
           <div className="form-group">
@@ -107,9 +107,6 @@ const MembershipPage = () => {
               onChange={handleChange}
               required
             />
-            <div className="input-icon">
-              <i className="fas fa-lock"></i>
-            </div>
           </div>
 
           <div className="form-group">
@@ -121,9 +118,6 @@ const MembershipPage = () => {
               onChange={handleChange}
               required
             />
-            <div className="input-icon">
-              <i className="fas fa-phone"></i>
-            </div>
           </div>
 
           <div className="form-group">
@@ -135,9 +129,6 @@ const MembershipPage = () => {
               onChange={handleChange}
               required
             />
-            <div className="input-icon">
-              <i className="fas fa-map-marker-alt"></i>
-            </div>
           </div>
 
           <div className="form-group">
@@ -149,9 +140,6 @@ const MembershipPage = () => {
               onChange={handleChange}
               required
             />
-            <div className="input-icon">
-              <i className="fas fa-tractor"></i>
-            </div>
           </div>
 
           <div className="form-group">
@@ -163,9 +151,6 @@ const MembershipPage = () => {
               onChange={handleChange}
               required
             />
-            <div className="input-icon">
-              <i className="fas fa-seedling"></i>
-            </div>
           </div>
 
           <motion.button
