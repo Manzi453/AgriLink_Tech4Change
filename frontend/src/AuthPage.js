@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 
 const AuthPage = () => {
   const { t } = useTranslation();
@@ -34,36 +35,31 @@ const AuthPage = () => {
         return;
       }
 
-      // TODO: implement signup logic
+      // TODO: Implement signup logic here
       return;
     }
 
     try {
-      const response = await fetch('https://agrilink-backend-production.up.railway.app/agriConnect/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
+      const response = await axios.post(
+        'https://agrilink-backend-production.up.railway.app/agriConnect/auth/login',
+        {
           email: formData.email,
           password: formData.password
-        })
-      });
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
 
-      let data;
-      try {
-        data = await response.json();
-      } catch {
-        throw new Error("Invalid JSON response from backend.");
-      }
+      const data = response.data;
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
-      }
-
+      // Store token and user role
       localStorage.setItem('token', data.token);
       localStorage.setItem('userRole', data.userType?.toLowerCase());
 
+      // Redirect based on userType from backend
       switch (data.userType?.toLowerCase()) {
         case 'farmer':
           navigate('/farmer-dashboard');
@@ -79,7 +75,13 @@ const AuthPage = () => {
       }
 
     } catch (err) {
-      setError(err.message);
+      if (err.response) {
+        setError(err.response.data.message || 'Login failed');
+      } else if (err.request) {
+        setError('No response from server. Please check your network or CORS settings.');
+      } else {
+        setError('Unexpected error: ' + err.message);
+      }
     }
   };
 
