@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 
 function Dashboard() {
   const { t } = useTranslation();
@@ -15,18 +16,17 @@ function Dashboard() {
   });
 
   const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
   const farmerId = user?.id;
-  const API_URL = 'https://agrilink-backend-production.up.railway.app';
+  const API_URL = 'https://agrilink-backend-production.up.railway.app/agriConnect';
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch(`${API_URL}/agriConnect/product/my-products?farmerId=${farmerId}`, {
+        const res = await axios.get(`${API_URL}/product/my-products?farmerId=${farmerId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        const result = await res.json();
-        setProducts(result.data || []);
+        setProducts(res.data.data || []);
       } catch (error) {
         console.error('Failed to fetch products:', error);
       }
@@ -59,17 +59,14 @@ function Dashboard() {
       formData.append("price", newProduct.price);
       formData.append("image", newProduct.image);
 
-      await fetch(`${API_URL}/agriConnect/product/listing?farmerId=${farmerId}`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData
-      });
-
-      const res = await fetch(`${API_URL}/agriConnect/product/my-products?farmerId=${farmerId}`, {
+      await axios.post(`${API_URL}/product/listing?farmerId=${farmerId}`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      const result = await res.json();
-      setProducts(result.data || []);
+
+      const res = await axios.get(`${API_URL}/product/my-products?farmerId=${farmerId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setProducts(res.data.data || []);
       setShowProductForm(false);
       setNewProduct({ name: '', quantity: '', price: '', image: null });
     } catch (error) {
@@ -79,15 +76,13 @@ function Dashboard() {
 
   const handlePublishProduct = async (productId) => {
     try {
-      await fetch(`${API_URL}/agriConnect/product/publish/${productId}`, {
-        method: 'PUT',
+      await axios.put(`${API_URL}/product/publish/${productId}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      const res = await fetch(`${API_URL}/agriConnect/product/my-products?farmerId=${farmerId}`, {
+      const res = await axios.get(`${API_URL}/product/my-products?farmerId=${farmerId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      const result = await res.json();
-      setProducts(result.data || []);
+      setProducts(res.data.data || []);
     } catch (error) {
       console.error('Publish failed:', error);
     }
@@ -129,7 +124,7 @@ function Dashboard() {
 
             {showProductForm && (
               <motion.div className="product-form-container" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-                <form onSubmit={handleSubmitProduct}>
+                <form onSubmit={handleSubmitProduct} className="styled-form">
                   <input type="text" name="name" placeholder={t('dashboard.cropName')} value={newProduct.name} onChange={handleProductInputChange} required />
                   <input type="number" name="quantity" placeholder={`${t('dashboard.quantity')} (${t('units.kg')})`} value={newProduct.quantity} onChange={handleProductInputChange} required />
                   <input type="number" name="price" placeholder={`${t('dashboard.price')} (${t('units.rwfPerKg')})`} value={newProduct.price} onChange={handleProductInputChange} required />
@@ -142,19 +137,32 @@ function Dashboard() {
               </motion.div>
             )}
 
-            <div className="product-grid">
-              {products.map(product => (
-                <motion.div className="product-card" key={product.id} whileHover={{ scale: 1.03 }}>
-                  <img src={product.image || "/images/default-crop.jpg"} alt={product.name} />
-                  <h3>{product.name}</h3>
-                  <p>{t('dashboard.available')}: {product.quantity} {t('units.kg')}</p>
-                  <p>{t('units.rwfPerKg')}: {product.price}</p>
-                  <motion.button className={`publish-button ${product.published ? '' : 'unpublished'}`} onClick={() => handlePublishProduct(product.id)} whileHover={{ scale: 1.05 }}>
-                    {product.published ? t('dashboard.published') : t('dashboard.publish')}
-                  </motion.button>
-                </motion.div>
-              ))}
-            </div>
+            <table className="styled-table">
+              <thead>
+                <tr>
+                  <th>{t('dashboard.cropName')}</th>
+                  <th>{t('dashboard.quantity')}</th>
+                  <th>{t('dashboard.price')}</th>
+                  <th>{t('dashboard.status')}</th>
+                  <th>{t('dashboard.actions')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {products.map(product => (
+                  <tr key={product.id}>
+                    <td>{product.name}</td>
+                    <td>{product.quantity}</td>
+                    <td>{product.price}</td>
+                    <td>{product.published ? t('dashboard.published') : t('dashboard.unpublished')}</td>
+                    <td>
+                      <motion.button className={`publish-button ${product.published ? '' : 'unpublished'}`} onClick={() => handlePublishProduct(product.id)} whileHover={{ scale: 1.05 }}>
+                        {product.published ? t('dashboard.published') : t('dashboard.publish')}
+                      </motion.button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </>
         )}
 
