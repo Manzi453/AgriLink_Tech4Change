@@ -33,7 +33,7 @@ const MembershipPage = () => {
       };
 
       await axios.post(
-        'https://agrilink-backend-production.up.railway.app/agriConnect/auth/apply/farmer',
+        'https://agrilink-backend-production.up.railway.app/agriConnect/public/apply/farmer',
         payload
       );
 
