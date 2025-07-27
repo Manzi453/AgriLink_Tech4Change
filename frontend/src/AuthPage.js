@@ -41,7 +41,7 @@ const AuthPage = () => {
 
     // LOGIN mode: Send credentials to backend
     try {
-      const response = await fetch('https://agrilink-backend.up.railway.app/agriConnect/auth/login', {
+      const response = await fetch('https://agrilink-backend.railway.internal/agriConnect/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
