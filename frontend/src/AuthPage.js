@@ -11,8 +11,7 @@ const AuthPage = () => {
     fullName: '',
     email: '',
     password: '',
-    confirmPassword: '',
-    role: 'client'
+    confirmPassword: ''
   });
   const [error, setError] = useState('');
 
@@ -39,29 +38,33 @@ const AuthPage = () => {
       return;
     }
 
-    // LOGIN mode: Send credentials to backend
-  const API_BASE = process.env.REACT_APP_API_BASE;
-  const response = await fetch(`${API_BASE}/agriConnect/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      email: formData.email,
-      password: formData.password
-    })
-  });
+    try {
+      const response = await fetch('https://agrilink-backend-production.up.railway.app/agriConnect/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        })
+      });
+
+      let data;
+      try {
+        data = await response.json();
+      } catch {
+        throw new Error("Invalid JSON response from backend.");
+      }
 
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
       }
 
-      // Store role and optionally token
-      localStorage.setItem('userRole', formData.role);
-      // localStorage.setItem('token', data.token); // optional
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userRole', data.userType?.toLowerCase());
 
-      // Redirect by role
-      switch (formData.role) {
+      switch (data.userType?.toLowerCase()) {
         case 'farmer':
           navigate('/farmer-dashboard');
           break;
@@ -74,6 +77,7 @@ const AuthPage = () => {
         default:
           navigate('/');
       }
+
     } catch (err) {
       setError(err.message);
     }
@@ -170,19 +174,6 @@ const AuthPage = () => {
               </div>
             </div>
           )}
-
-          <div className="form-group">
-            <select
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="role-select"
-            >
-              <option value="farmer">{t('roles.farmer')}</option>
-              <option value="client">{t('roles.client')}</option>
-              <option value="admin">{t('roles.admin')}</option>
-            </select>
-          </div>
 
           <motion.button
             type="submit"
