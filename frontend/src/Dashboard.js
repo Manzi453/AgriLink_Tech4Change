@@ -22,7 +22,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch(`${API_URL}/product/my-products?farmerId=${farmerId}`, {
+        const res = await fetch(`${API_URL}/agriConnect/product/my-products?farmerId=${farmerId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         const result = await res.json();
@@ -59,13 +59,13 @@ function Dashboard() {
       formData.append("price", newProduct.price);
       formData.append("image", newProduct.image);
 
-      await fetch(`${API_URL}/product/listing?farmerId=${farmerId}`, {
+      await fetch(`${API_URL}/agriConnect/product/listing?farmerId=${farmerId}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: formData
       });
 
-      const res = await fetch(`${API_URL}/product/my-products?farmerId=${farmerId}`, {
+      const res = await fetch(`${API_URL}/agriConnect/product/my-products?farmerId=${farmerId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const result = await res.json();
@@ -79,11 +79,11 @@ function Dashboard() {
 
   const handlePublishProduct = async (productId) => {
     try {
-      await fetch(`${API_URL}/product/publish/${productId}`, {
+      await fetch(`${API_URL}/agriConnect/product/publish/${productId}`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` }
       });
-      const res = await fetch(`${API_URL}/product/my-products?farmerId=${farmerId}`, {
+      const res = await fetch(`${API_URL}/agriConnect/product/my-products?farmerId=${farmerId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       const result = await res.json();
