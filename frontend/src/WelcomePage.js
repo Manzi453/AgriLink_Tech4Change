@@ -33,24 +33,13 @@ const WelcomePage = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
         >
-          <Link to="/auth">
+          <Link to="/home">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="get-started-btn"
             >
-              {t('login')}
-            </motion.button>
-          </Link>
-
-          <Link to="/signup">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="get-started-btn"
-              style={{ marginLeft: '10px' }}
-            >
-              {t('signup.title')}
+              {t('home.getStarted')}
             </motion.button>
           </Link>
         </motion.div>
