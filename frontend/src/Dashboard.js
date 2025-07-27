@@ -39,7 +39,7 @@ function Dashboard() {
     };
 
     fetchProducts();
-  }, [token, farmerId]);
+  }, [token, farmerId, user]);
 
   const handleProductInputChange = (e) => {
     const { name, value } = e.target;
