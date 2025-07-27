@@ -7,7 +7,7 @@ import axios from 'axios';
 const AuthPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [isLoginMode, setIsLoginMode] = useState(true); // Start in login mode
+  const [isLoginMode, setIsLoginMode] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -25,10 +25,7 @@ const AuthPage = () => {
     e.preventDefault();
     setError('');
 
-    console.log("Submit clicked. isLoginMode:", isLoginMode);
-
     if (!isLoginMode) {
-      // Signup mode
       if (formData.password !== formData.confirmPassword) {
         setError(t('auth.passwordsDontMatch'));
         return;
@@ -39,66 +36,48 @@ const AuthPage = () => {
       }
 
       try {
-        const response = await axios.post(
-          'https://agrilink-backend-production.up.railway.app/agriConnect/auth/signup/citizen',
-          {
-            fullName: formData.fullName,
-            email: formData.email,
-            password: formData.password
-          }
-        );
+        const response = await axios.post('https://agrilink-backend-production.up.railway.app/agriConnect/auth/signup/citizen', {
+          fullName: formData.fullName,
+          email: formData.email,
+          password: formData.password
+        });
 
-        alert('Signup successful! Please log in.');
+        const data = response.data;
+        alert(data.message || 'Signup successful. You can now log in.');
         setIsLoginMode(true);
       } catch (err) {
-        if (err.response) {
-          setError(err.response.data.message || 'Signup failed');
-        } else if (err.request) {
-          setError('Server not responding. Check your network.');
-        } else {
-          setError('Unexpected error: ' + err.message);
-        }
+        setError(err.response?.data?.message || 'Signup failed');
       }
 
       return;
     }
 
-    // Login mode
     try {
-      const response = await axios.post(
-        'https://agrilink-backend-production.up.railway.app/agriConnect/auth/login',
-        {
-          email: formData.email,
-          password: formData.password
-        }
-      );
+      const response = await axios.post('https://agrilink-backend-production.up.railway.app/agriConnect/auth/login', {
+        email: formData.email,
+        password: formData.password
+      });
 
       const data = response.data;
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('userRole', data.userType?.toLowerCase());
 
-      switch (data.userType?.toLowerCase()) {
-        case 'farmer':
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('email', data.email);
+
+      switch (data.userType) {
+        case 'FARMER':
           navigate('/farmer-dashboard');
           break;
-        case 'client':
+        case 'CLIENT':
           navigate('/client-dashboard');
           break;
-        case 'admin':
+        case 'ADMIN':
           navigate('/admin-dashboard');
           break;
         default:
           navigate('/');
       }
-
     } catch (err) {
-      if (err.response) {
-        setError(err.response.data.message || 'Login failed');
-      } else if (err.request) {
-        setError('Server not responding. Check your network.');
-      } else {
-        setError('Unexpected error: ' + err.message);
-      }
+      setError(err.response?.data?.message || 'Login failed');
     }
   };
 
@@ -208,12 +187,8 @@ const AuthPage = () => {
           <div>
             {isLoginMode ? t('auth.noAccount') : t('auth.haveAccount')}
             <button
-              type="button"
               className="auth-switch"
-              onClick={() => {
-                setIsLoginMode(prev => !prev);
-                setError('');
-              }}
+              onClick={() => setIsLoginMode(!isLoginMode)}
             >
               {isLoginMode ? t('auth.signupLink') : t('auth.loginLink')}
             </button>
