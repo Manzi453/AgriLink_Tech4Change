@@ -25,9 +25,10 @@ const AuthPage = () => {
     e.preventDefault();
     setError('');
 
-    console.log("Form submitted in mode:", isLoginMode ? "Login" : "Signup");
+    console.log("Submit clicked. isLoginMode:", isLoginMode);
 
     if (!isLoginMode) {
+      // Signup mode
       if (formData.password !== formData.confirmPassword) {
         setError(t('auth.passwordsDontMatch'));
         return;
@@ -53,7 +54,7 @@ const AuthPage = () => {
         if (err.response) {
           setError(err.response.data.message || 'Signup failed');
         } else if (err.request) {
-          setError('Server not responding. Please check your network.');
+          setError('Server not responding. Check your network.');
         } else {
           setError('Unexpected error: ' + err.message);
         }
@@ -61,6 +62,8 @@ const AuthPage = () => {
 
       return;
     }
+
+    // Login mode
     try {
       const response = await axios.post(
         'https://agrilink-backend-production.up.railway.app/agriConnect/auth/login',
@@ -92,7 +95,7 @@ const AuthPage = () => {
       if (err.response) {
         setError(err.response.data.message || 'Login failed');
       } else if (err.request) {
-        setError('Server not responding. Please check your network.');
+        setError('Server not responding. Check your network.');
       } else {
         setError('Unexpected error: ' + err.message);
       }
