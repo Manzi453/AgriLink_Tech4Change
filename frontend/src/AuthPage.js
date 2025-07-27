@@ -26,6 +26,7 @@ const AuthPage = () => {
     setError('');
 
     if (!isLoginMode) {
+      // Signup mode
       if (formData.password !== formData.confirmPassword) {
         setError(t('auth.passwordsDontMatch'));
         return;
@@ -35,10 +36,38 @@ const AuthPage = () => {
         return;
       }
 
-      // TODO: Implement signup logic here
+      try {
+        const response = await axios.post(
+          'https://agrilink-backend-production.up.railway.app/agriConnect/auth/signup/citizen',
+          {
+            fullName: formData.fullName,
+            email: formData.email,
+            password: formData.password
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+
+        alert('Signup successful! You can now log in.');
+        setIsLoginMode(true); // Switch to login mode
+
+      } catch (err) {
+        if (err.response) {
+          setError(err.response.data.message || 'Signup failed');
+        } else if (err.request) {
+          setError('Server not responding. Please check your network.');
+        } else {
+          setError('Unexpected error: ' + err.message);
+        }
+      }
+
       return;
     }
 
+    // Login mode
     try {
       const response = await axios.post(
         'https://agrilink-backend-production.up.railway.app/agriConnect/auth/login',
@@ -54,12 +83,9 @@ const AuthPage = () => {
       );
 
       const data = response.data;
-
-      // Store token and user role
       localStorage.setItem('token', data.token);
       localStorage.setItem('userRole', data.userType?.toLowerCase());
 
-      // Redirect based on userType from backend
       switch (data.userType?.toLowerCase()) {
         case 'farmer':
           navigate('/farmer-dashboard');
@@ -78,7 +104,7 @@ const AuthPage = () => {
       if (err.response) {
         setError(err.response.data.message || 'Login failed');
       } else if (err.request) {
-        setError('No response from server. Please check your network or CORS settings.');
+        setError('Server not responding. Please check your network or CORS settings.');
       } else {
         setError('Unexpected error: ' + err.message);
       }
