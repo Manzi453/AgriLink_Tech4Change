@@ -6,8 +6,6 @@ function Dashboard() {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('dashboard');
   const [products, setProducts] = useState([]);
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
   const [showProductForm, setShowProductForm] = useState(false);
   const [newProduct, setNewProduct] = useState({
     name: '',
@@ -43,19 +41,22 @@ function Dashboard() {
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
-      const file = e.target.files[0];
-      setNewProduct(prev => ({ ...prev, image: file }));
+      setNewProduct(prev => ({ ...prev, image: e.target.files[0] }));
     }
   };
 
   const handleSubmitProduct = async (e) => {
     e.preventDefault();
+    if (!newProduct.image) {
+      alert("Please upload an image for the product.");
+      return;
+    }
     try {
       const formData = new FormData();
       formData.append("name", newProduct.name);
       formData.append("quantity", newProduct.quantity);
       formData.append("price", newProduct.price);
-      if (newProduct.image) formData.append("image", newProduct.image);
+      formData.append("image", newProduct.image);
 
       await fetch(`${API_URL}/product/listing?farmerId=${farmerId}`, {
         method: 'POST',
@@ -131,7 +132,7 @@ function Dashboard() {
                   <input type="text" name="name" placeholder={t('dashboard.cropName')} value={newProduct.name} onChange={handleProductInputChange} required />
                   <input type="number" name="quantity" placeholder={`${t('dashboard.quantity')} (${t('units.kg')})`} value={newProduct.quantity} onChange={handleProductInputChange} required />
                   <input type="number" name="price" placeholder={`${t('dashboard.price')} (${t('units.rwfPerKg')})`} value={newProduct.price} onChange={handleProductInputChange} required />
-                  <input type="file" accept="image/*" onChange={handleImageChange} />
+                  <input type="file" accept="image/*" onChange={handleImageChange} required />
                   <div className="form-actions">
                     <motion.button type="submit" className="welcome-btn" whileHover={{ scale: 1.05 }}>{t('dashboard.save')}</motion.button>
                     <motion.button type="button" className="welcome-btn cancel-btn" onClick={() => setShowProductForm(false)} whileHover={{ scale: 1.05 }}>{t('dashboard.cancel')}</motion.button>
