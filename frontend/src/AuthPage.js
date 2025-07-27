@@ -1,4 +1,3 @@
-// src/AuthPage.js
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, Link } from 'react-router-dom';
@@ -22,11 +21,10 @@ const AuthPage = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    // Simple validation
     if (!isLoginMode) {
       if (formData.password !== formData.confirmPassword) {
         setError(t('auth.passwordsDontMatch'));
@@ -36,18 +34,50 @@ const AuthPage = () => {
         setError(t('auth.passwordLength'));
         return;
       }
+
+      // TODO: implement signup logic
+      return;
     }
 
-    // Store user role in localStorage
-    localStorage.setItem('userRole', formData.role);
+    // LOGIN mode: Send credentials to backend
+    try {
+      const response = await fetch('https://agrilink-backend.up.railway.app/agriConnect/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        })
+      });
 
-    // Redirect based on role
-    if (formData.role === 'farmer') {
-      navigate('/farmer-dashboard');
-    } else if (formData.role === 'client') {
-      navigate('/client-dashboard');
-    } else if (formData.role === 'admin') {
-      navigate('/admin-dashboard');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+
+      // Store role and optionally token
+      localStorage.setItem('userRole', formData.role);
+      // localStorage.setItem('token', data.token); // optional
+
+      // Redirect by role
+      switch (formData.role) {
+        case 'farmer':
+          navigate('/farmer-dashboard');
+          break;
+        case 'client':
+          navigate('/client-dashboard');
+          break;
+        case 'admin':
+          navigate('/admin-dashboard');
+          break;
+        default:
+          navigate('/');
+      }
+    } catch (err) {
+      setError(err.message);
     }
   };
 
@@ -178,7 +208,7 @@ const AuthPage = () => {
           </div>
           {isLoginMode && (
             <div className="farmer-membership-link">
-              {t('auth.areYouFarmer')} 
+              {t('auth.areYouFarmer')}{" "}
               <Link to="/membership" className="membership-link">
                 {t('auth.requestMembership')}
               </Link>
