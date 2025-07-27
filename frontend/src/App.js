@@ -8,7 +8,7 @@ import HomePage from './HomePage';
 import SignUpPage from './SignUpPage';
 import MembershipPage from './MembershipPage';
 import AuthPage from './AuthPage';
-import FarmerDashboard from './Dashboard'; // Renamed to FarmerDashboard
+import FarmerDashboard from './Dashboard';
 import ClientDashboard from './ClientDashboard';
 import AdminDashboard from './AdminDashboard';
 import './App.css';
