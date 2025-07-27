@@ -36,7 +36,7 @@ const AuthPage = () => {
       }
 
       try {
-        const response = await axios.post('https://agrilink-backend-production.up.railway.app/agriConnect/auth/signup/citizen', {
+        const response = await axios.post('https://agrilink-backend-production.up.railway.app/agriConnect/public/signup/citizen', {
           fullName: formData.fullName,
           email: formData.email,
           password: formData.password
