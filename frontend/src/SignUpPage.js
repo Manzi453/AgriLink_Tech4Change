@@ -7,6 +7,7 @@ import axios from 'axios';
 const SignUpPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -15,27 +16,22 @@ const SignUpPage = () => {
     phoneNumber: '',
     location: ''
   });
+
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
 
     if (formData.password !== formData.confirmPassword) {
-      setError(t('auth.passwordsDontMatch'));
-      return;
-    }
-
-    if (formData.password.length < 6) {
-      setError(t('auth.passwordLength'));
+      setError('Passwords do not match');
       return;
     }
 
@@ -51,8 +47,8 @@ const SignUpPage = () => {
         }
       );
 
-      // Redirect to login or dashboard after successful signup
-      navigate('/auth');
+      setSuccess('Signup successful!');
+      setTimeout(() => navigate('/auth'), 1000);
     } catch (err) {
       setError(err.response?.data?.message || 'Signup failed');
     }
@@ -65,14 +61,11 @@ const SignUpPage = () => {
       exit={{ opacity: 0 }}
       className="page-container"
     >
-      <motion.div
-        className="dark-card"
-        initial={{ y: 20 }}
-        animate={{ y: 0 }}
-      >
+      <motion.div className="dark-card" initial={{ y: 20 }} animate={{ y: 0 }}>
         <h1>{t('signup.title')}</h1>
 
-        {error && <div className="auth-error">{error}</div>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {success && <p style={{ color: 'green' }}>{success}</p>}
 
         <form onSubmit={handleSubmit}>
           <input
@@ -121,12 +114,14 @@ const SignUpPage = () => {
             placeholder="Location"
             value={formData.location}
             onChange={handleChange}
+            required
           />
-          <button type="submit">{t('signup.submitButton')}</button>
+
+          <button type="submit">Sign Up</button>
         </form>
 
         <p className="form-footer">
-          {t('signup.haveAccount')} <Link to="/auth">{t('login')}</Link>
+          Already have an account? <Link to="/auth">{t('login')}</Link>
         </p>
       </motion.div>
     </motion.div>
