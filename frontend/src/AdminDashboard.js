@@ -12,7 +12,7 @@ const AdminDashboard = () => {
 
   const fetchApplications = async () => {
     try {
-      const response = await axios.get(`${API_URL}/admin/membership-applications`, {
+      const response = await axios.get(`${API_URL}/agriConnect/admin/membership-applications`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
@@ -25,7 +25,7 @@ const AdminDashboard = () => {
 
   const approveApplication = async (id) => {
     try {
-      await axios.post(`${API_URL}/admin/approve-membership?applicationId=${id}`, {}, {
+      await axios.post(`${API_URL}/agriConnect/admin/approve-membership?applicationId=${id}`, {}, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`
         }
