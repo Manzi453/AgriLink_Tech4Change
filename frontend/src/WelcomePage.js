@@ -18,8 +18,8 @@ const WelcomePage = () => {
       <div className="language-switcher-container">
         <LanguageSwitcher />
       </div>
-      
-      <motion.div 
+
+      <motion.div
         className="welcome-content"
         initial={{ y: 20 }}
         animate={{ y: 0 }}
@@ -33,13 +33,24 @@ const WelcomePage = () => {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
         >
-          <Link to="/home">
+          <Link to="/auth">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="get-started-btn"
             >
-              {t('home.getStarted')}
+              {t('login')}
+            </motion.button>
+          </Link>
+
+          <Link to="/signup">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="get-started-btn"
+              style={{ marginLeft: '10px' }}
+            >
+              {t('signup.title')}
             </motion.button>
           </Link>
         </motion.div>
