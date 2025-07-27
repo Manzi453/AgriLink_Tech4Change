@@ -15,7 +15,8 @@ function Dashboard() {
   });
 
   const token = localStorage.getItem('token');
-  const farmerId = localStorage.getItem('userId');
+  const user = JSON.parse(localStorage.getItem('user'));
+  const farmerId = user?.id;
   const API_URL = 'https://agrilink-backend-production.up.railway.app';
 
   useEffect(() => {
@@ -31,7 +32,7 @@ function Dashboard() {
       }
     };
 
-    fetchProducts();
+    if (farmerId) fetchProducts();
   }, [token, farmerId]);
 
   const handleProductInputChange = (e) => {
