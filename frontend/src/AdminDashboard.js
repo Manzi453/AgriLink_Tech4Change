@@ -1,72 +1,75 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { motion } from 'framer-motion';
 import axios from 'axios';
+import { motion } from 'framer-motion';
 
 const AdminDashboard = () => {
-  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('applications');
   const [applications, setApplications] = useState([]);
 
-  const fetchApplications = async () => {
+  useEffect(() => {
+    fetchPendingApplications();
+  }, []);
+
+  const fetchPendingApplications = async () => {
     try {
-      const response = await axios.get('/admin/membership-applications', {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/admin/membership-applications`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       });
       setApplications(response.data);
     } catch (error) {
-      console.error('Error fetching applications:', error);
+      console.error('Failed to fetch applications', error);
     }
   };
 
-  const approveApplication = async (id) => {
+  const handleApprove = async (id) => {
     try {
-      await axios.post(`/admin/approve-membership?applicationId=${id}`, {}, {
+      await axios.post(`${process.env.REACT_APP_API_BASE_URL}/admin/approve-membership`, null, {
+        params: { applicationId: id },
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       });
-      fetchApplications();
+      setApplications(applications.filter(app => app.id !== id));
     } catch (error) {
-      console.error('Error approving application:', error);
+      console.error('Approval failed', error);
     }
   };
-
-  useEffect(() => {
-    fetchApplications();
-  }, []);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="dashboard-container">
       <div className="dashboard-sidebar">
+        <div className="sidebar-profile-info">
+          <h4>Admin User</h4>
+          <p>admin@example.com</p>
+        </div>
         <ul>
           <li>
             <a href="#applications" onClick={() => setActiveTab('applications')} className={activeTab === 'applications' ? 'active' : ''}>
-              {t('dashboard.membershipApplications')}
+              Membership Applications
             </a>
           </li>
           <li>
             <a href="#users" onClick={() => setActiveTab('users')} className={activeTab === 'users' ? 'active' : ''}>
-              {t('dashboard.manageUsers')}
+              Manage Users
             </a>
           </li>
           <li>
             <a href="#products" onClick={() => setActiveTab('products')} className={activeTab === 'products' ? 'active' : ''}>
-              {t('dashboard.manageProducts')}
+              Manage Products
             </a>
           </li>
           <li>
             <a href="#analytics" onClick={() => setActiveTab('analytics')} className={activeTab === 'analytics' ? 'active' : ''}>
-              {t('dashboard.analytics')}
+              Analytics
             </a>
           </li>
         </ul>
       </div>
 
       <div className="dashboard-main">
-        <h1>{t('dashboard.adminDashboard')}</h1>
+        <h1>Admin Dashboard</h1>
 
         {activeTab === 'applications' && (
           <div className="admin-section">
@@ -74,12 +77,12 @@ const AdminDashboard = () => {
               <table>
                 <thead>
                   <tr>
-                    <th>{t('dashboard.name')}</th>
-                    <th>{t('dashboard.email')}</th>
-                    <th>{t('dashboard.phone')}</th>
-                    <th>{t('dashboard.location')}</th>
-                    <th>{t('dashboard.status')}</th>
-                    <th>{t('dashboard.actions')}</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -87,21 +90,19 @@ const AdminDashboard = () => {
                     <tr key={app.id}>
                       <td>{app.user?.fullName}</td>
                       <td>{app.user?.email}</td>
-                      <td>{app.user?.phoneNumber}</td>
+                      <td>{app.user?.phone}</td>
                       <td>{app.user?.location}</td>
                       <td>{app.status}</td>
                       <td>
-                        {app.status === 'PENDING' ? (
+                        {app.status === 'PENDING' && (
                           <motion.button
                             className="approve-btn"
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            onClick={() => approveApplication(app.id)}
+                            onClick={() => handleApprove(app.id)}
                           >
-                            {t('dashboard.approve')}
+                            Approve
                           </motion.button>
-                        ) : (
-                          <span className="approved-label">{t('dashboard.approved')}</span>
                         )}
                       </td>
                     </tr>
@@ -111,11 +112,6 @@ const AdminDashboard = () => {
             </div>
           </div>
         )}
-
-        {/* Placeholder tabs */}
-        {activeTab === 'users' && <p>{t('dashboard.manageUsers')} section</p>}
-        {activeTab === 'products' && <p>{t('dashboard.manageProducts')} section</p>}
-        {activeTab === 'analytics' && <p>{t('dashboard.analytics')} section</p>}
       </div>
     </motion.div>
   );
