@@ -40,19 +40,17 @@ const AuthPage = () => {
     }
 
     // LOGIN mode: Send credentials to backend
-    try {
-      const response = await fetch('https://agrilink-backend-production.up.railway.app/agriConnect/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password
-        })
-      });
-
-      const data = await response.json();
+  const API_BASE = process.env.REACT_APP_API_BASE;
+  const response = await fetch(`${API_BASE}/agriConnect/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      email: formData.email,
+      password: formData.password
+    })
+  });
 
       if (!response.ok) {
         throw new Error(data.message || 'Login failed');
