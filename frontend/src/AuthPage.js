@@ -7,7 +7,7 @@ import axios from 'axios';
 const AuthPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [isLoginMode, setIsLoginMode] = useState(false);
+  const [isLoginMode, setIsLoginMode] = useState(true);
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -25,8 +25,9 @@ const AuthPage = () => {
     e.preventDefault();
     setError('');
 
+    console.log("Form submitted in mode:", isLoginMode ? "Login" : "Signup");
+
     if (!isLoginMode) {
-      // Signup mode
       if (formData.password !== formData.confirmPassword) {
         setError(t('auth.passwordsDontMatch'));
         return;
@@ -43,17 +44,11 @@ const AuthPage = () => {
             fullName: formData.fullName,
             email: formData.email,
             password: formData.password
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json'
-            }
           }
         );
 
-        alert('Signup successful! You can now log in.');
-        setIsLoginMode(true); // Switch to login mode
-
+        alert('Signup successful! Please log in.');
+        setIsLoginMode(true);
       } catch (err) {
         if (err.response) {
           setError(err.response.data.message || 'Signup failed');
@@ -66,19 +61,12 @@ const AuthPage = () => {
 
       return;
     }
-
-    // Login mode
     try {
       const response = await axios.post(
         'https://agrilink-backend-production.up.railway.app/agriConnect/auth/login',
         {
           email: formData.email,
           password: formData.password
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          }
         }
       );
 
@@ -104,7 +92,7 @@ const AuthPage = () => {
       if (err.response) {
         setError(err.response.data.message || 'Login failed');
       } else if (err.request) {
-        setError('Server not responding. Please check your network or CORS settings.');
+        setError('Server not responding. Please check your network.');
       } else {
         setError('Unexpected error: ' + err.message);
       }
@@ -217,8 +205,12 @@ const AuthPage = () => {
           <div>
             {isLoginMode ? t('auth.noAccount') : t('auth.haveAccount')}
             <button
+              type="button"
               className="auth-switch"
-              onClick={() => setIsLoginMode(!isLoginMode)}
+              onClick={() => {
+                setIsLoginMode(prev => !prev);
+                setError('');
+              }}
             >
               {isLoginMode ? t('auth.signupLink') : t('auth.loginLink')}
             </button>
