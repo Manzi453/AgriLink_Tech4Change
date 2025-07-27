@@ -90,7 +90,7 @@ const AuthPage = () => {
         case 'farmer':
           navigate('/farmer-dashboard');
           break;
-        case 'client':
+        case 'citizen':
           navigate('/client-dashboard');
           break;
         case 'admin':
