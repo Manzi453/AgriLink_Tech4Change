@@ -16,11 +16,17 @@ function Dashboard() {
   });
 
   const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const user = JSON.parse(localStorage.getItem('user'));
   const farmerId = user?.id;
   const API_URL = 'https://agrilink-backend-production.up.railway.app/agriConnect';
 
   useEffect(() => {
+    if (!user || !user.id) {
+      console.warn('No user found in localStorage. Redirecting to login.');
+      window.location.href = '/auth';
+      return;
+    }
+
     const fetchProducts = async () => {
       try {
         const res = await axios.get(`${API_URL}/product/my-products?farmerId=${farmerId}`, {
@@ -32,7 +38,7 @@ function Dashboard() {
       }
     };
 
-    if (farmerId) fetchProducts();
+    fetchProducts();
   }, [token, farmerId]);
 
   const handleProductInputChange = (e) => {
