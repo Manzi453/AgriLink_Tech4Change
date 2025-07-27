@@ -46,29 +46,29 @@ const AdminDashboard = () => {
         <ul>
           <li>
             <a href="#applications" onClick={() => setActiveTab('applications')} className={activeTab === 'applications' ? 'active' : ''}>
-              {t('dashboard.membershipApplications')}
+              Membership Applications
             </a>
           </li>
           <li>
             <a href="#users" onClick={() => setActiveTab('users')} className={activeTab === 'users' ? 'active' : ''}>
-              {t('dashboard.manageUsers')}
+              Manage Users
             </a>
           </li>
           <li>
             <a href="#products" onClick={() => setActiveTab('products')} className={activeTab === 'products' ? 'active' : ''}>
-              {t('dashboard.manageProducts')}
+              Manage Products
             </a>
           </li>
           <li>
             <a href="#analytics" onClick={() => setActiveTab('analytics')} className={activeTab === 'analytics' ? 'active' : ''}>
-              {t('dashboard.analytics')}
+              Analytics
             </a>
           </li>
         </ul>
       </div>
 
       <div className="dashboard-main">
-        <h1>{t('dashboard.adminDashboard')}</h1>
+        <h1>Admin Dashboard</h1>
 
         {activeTab === 'applications' && (
           <div className="admin-section">
@@ -76,12 +76,12 @@ const AdminDashboard = () => {
               <table>
                 <thead>
                   <tr>
-                    <th>{t('dashboard.name')}</th>
-                    <th>{t('dashboard.email')}</th>
-                    <th>{t('dashboard.phone')}</th>
-                    <th>{t('dashboard.location')}</th>
-                    <th>{t('dashboard.status')}</th>
-                    <th>{t('dashboard.actions')}</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -100,10 +100,10 @@ const AdminDashboard = () => {
                             whileTap={{ scale: 0.95 }}
                             onClick={() => approveApplication(app.id)}
                           >
-                            {t('dashboard.approve')}
+                            Approve
                           </motion.button>
                         ) : (
-                          <span className="approved-label">{t('dashboard.approved')}</span>
+                          <span className="approved-label">Approved</span>
                         )}
                       </td>
                     </tr>
@@ -114,10 +114,9 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* Other tabs - placeholders */}
-        {activeTab === 'users' && <p>{t('dashboard.manageUsers')} section</p>}
-        {activeTab === 'products' && <p>{t('dashboard.manageProducts')} section</p>}
-        {activeTab === 'analytics' && <p>{t('dashboard.analytics')} section</p>}
+        {activeTab === 'users' && <p>Manage Users section</p>}
+        {activeTab === 'products' && <p>Manage Products section</p>}
+        {activeTab === 'analytics' && <p>Analytics section</p>}
       </div>
     </motion.div>
   );
