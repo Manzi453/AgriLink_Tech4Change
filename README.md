@@ -12,8 +12,6 @@ This project consists of two separate repositories for the frontend and backend.
 # Clone the frontend repository from GitHub
 git clone https://github.com/Manzi453/AgriLink_Tech4Change.git
 
-# Move into the project directory
-cd AgriLink_Tech4Change
 
 # Navigate to the frontend source folder
 cd frontend
