@@ -10,7 +10,7 @@ const AdminDashboard = () => {
 
   const API_URL = 'https://agrilink-backend-production.up.railway.app';
 
-  // Mock users data based on your database
+  // Mock users data based on our database
   const [users] = useState([
     {
       id: 1,
@@ -59,55 +59,6 @@ const AdminDashboard = () => {
     }
   ]);
 
-  // Mock products data
-  const [products] = useState([
-    {
-      id: 1,
-      name: 'Maize',
-      farmer: 'laura',
-      status: 'Approved',
-      quantity: '50 kg',
-      price: 'RWF 300/kg',
-      dateAdded: '2025-07-25'
-    },
-    {
-      id: 2,
-      name: 'Sweet Potatoes',
-      farmer: 'Musana',
-      status: 'Pending',
-      quantity: '75 kg',
-      price: 'RWF 250/kg',
-      dateAdded: '2025-07-27'
-    },
-    {
-      id: 3,
-      name: 'Beans',
-      farmer: 'User',
-      status: 'Approved',
-      quantity: '30 kg',
-      price: 'RWF 450/kg',
-      dateAdded: '2025-07-26'
-    },
-    {
-      id: 4,
-      name: 'Tomatoes',
-      farmer: 'laura',
-      status: 'Pending',
-      quantity: '40 kg',
-      price: 'RWF 400/kg',
-      dateAdded: '2025-07-27'
-    },
-    {
-      id: 5,
-      name: 'Carrots',
-      farmer: 'Musana',
-      status: 'Approved',
-      quantity: '25 kg',
-      price: 'RWF 350/kg',
-      dateAdded: '2025-07-24'
-    }
-  ]);
-
   const fetchApplications = async () => {
     try {
       const response = await axios.get(`${API_URL}/agriConnect/admin/membership-applications`, {
@@ -134,7 +85,7 @@ const AdminDashboard = () => {
     }
   };
 
-  // Mock functions for user and product management
+  // Mock functions for user management
   const handleEditUser = (userId) => {
     console.log('Edit user:', userId);
     // Add edit user functionality here
@@ -143,16 +94,6 @@ const AdminDashboard = () => {
   const handleDeleteUser = (userId) => {
     console.log('Delete user:', userId);
     // Add delete user functionality here
-  };
-
-  const handleApproveProduct = (productId) => {
-    console.log('Approve product:', productId);
-    // Add approve product functionality here
-  };
-
-  const handleRejectProduct = (productId) => {
-    console.log('Reject product:', productId);
-    // Add reject product functionality here
   };
 
   useEffect(() => {
@@ -178,7 +119,6 @@ const AdminDashboard = () => {
               {t('dashboard.manageUsers')}
             </a>
           </li>
-
           <li>
             <a href="#analytics" onClick={() => setActiveTab('analytics')} className={activeTab === 'analytics' ? 'active' : ''}>
               {t('dashboard.analytics')}
@@ -315,21 +255,20 @@ const AdminDashboard = () => {
                 className="analytics-card"
                 whileHover={{ scale: 1.03 }}
               >
-                <h3>Active Products</h3>
-                <p className="stat">{products.filter(p => p.status === 'Approved').length}</p>
-                <p className="stat-description">Approved listings</p>
+                <h3>Active Farmers</h3>
+                <p className="stat">{users.filter(u => u.role === 'Farmer').length}</p>
+                <p className="stat-description">Registered farmers</p>
               </motion.div>
 
               <motion.div
                 className="analytics-card"
                 whileHover={{ scale: 1.03 }}
               >
-                <h3>Pending Approvals</h3>
+                <h3>Pending Applications</h3>
                 <p className="stat">
-                  {applications.filter(app => app.status === 'PENDING').length +
-                   products.filter(p => p.status === 'Pending').length}
+                  {applications.filter(app => app.status === 'PENDING').length}
                 </p>
-                <p className="stat-description">Items awaiting review</p>
+                <p className="stat-description">Awaiting approval</p>
               </motion.div>
 
               <motion.div
@@ -354,9 +293,9 @@ const AdminDashboard = () => {
                 className="analytics-card"
                 whileHover={{ scale: 1.03 }}
               >
-                <h3>Total Farmers</h3>
-                <p className="stat">{users.filter(u => u.role === 'Farmer').length}</p>
-                <p className="stat-description">Active farmers</p>
+                <h3>Active Clients</h3>
+                <p className="stat">{users.filter(u => u.role === 'Client').length}</p>
+                <p className="stat-description">Registered clients</p>
               </motion.div>
             </div>
           </div>
@@ -453,8 +392,7 @@ const AdminDashboard = () => {
         }
 
         .approve-btn,
-        .edit-btn,
-        .view-btn {
+        .edit-btn {
           background: #22c55e;
           color: white;
           border: none;
@@ -467,13 +405,11 @@ const AdminDashboard = () => {
         }
 
         .approve-btn:hover,
-        .edit-btn:hover,
-        .view-btn:hover {
+        .edit-btn:hover {
           background: #16a34a;
         }
 
-        .delete-btn,
-        .reject-btn {
+        .delete-btn {
           background: #ef4444;
           color: white;
           border: none;
@@ -485,17 +421,8 @@ const AdminDashboard = () => {
           transition: background-color 0.2s;
         }
 
-        .delete-btn:hover,
-        .reject-btn:hover {
+        .delete-btn:hover {
           background: #dc2626;
-        }
-
-        .view-btn {
-          background: #3b82f6;
-        }
-
-        .view-btn:hover {
-          background: #2563eb;
         }
 
         .approved-label {
