@@ -178,11 +178,7 @@ const AdminDashboard = () => {
               {t('dashboard.manageUsers')}
             </a>
           </li>
-          <li>
-            <a href="#products" onClick={() => setActiveTab('products')} className={activeTab === 'products' ? 'active' : ''}>
-              {t('dashboard.manageProducts')}
-            </a>
-          </li>
+
           <li>
             <a href="#analytics" onClick={() => setActiveTab('analytics')} className={activeTab === 'analytics' ? 'active' : ''}>
               {t('dashboard.analytics')}
@@ -302,72 +298,6 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {activeTab === 'products' && (
-          <div className="admin-section">
-            <h2>Manage Products</h2>
-            <div className="admin-table">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Product</th>
-                    <th>Farmer</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Status</th>
-                    <th>Date Added</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {products.map(product => (
-                    <tr key={product.id}>
-                      <td>{product.name}</td>
-                      <td>{product.farmer}</td>
-                      <td>{product.quantity}</td>
-                      <td>{product.price}</td>
-                      <td>
-                        <span className={`status-badge ${product.status.toLowerCase()}`}>
-                          {product.status}
-                        </span>
-                      </td>
-                      <td>{product.dateAdded}</td>
-                      <td>
-                        {product.status === 'Pending' && (
-                          <>
-                            <motion.button
-                              className="approve-btn"
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                              onClick={() => handleApproveProduct(product.id)}
-                            >
-                              Approve
-                            </motion.button>
-                            <motion.button
-                              className="reject-btn"
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                              onClick={() => handleRejectProduct(product.id)}
-                            >
-                              Reject
-                            </motion.button>
-                          </>
-                        )}
-                        <motion.button
-                          className="view-btn"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          View
-                        </motion.button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        )}
-
         {activeTab === 'analytics' && (
           <div className="admin-section">
             <h2>Platform Analytics</h2>
@@ -446,7 +376,7 @@ const AdminDashboard = () => {
         }
 
         .admin-table {
-          background: white;
+          background: #1f2937;
           border-radius: 12px;
           overflow: hidden;
           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -461,20 +391,24 @@ const AdminDashboard = () => {
         .admin-table td {
           padding: 1rem;
           text-align: left;
-          border-bottom: 1px solid #e5e7eb;
+          border-bottom: 1px solid #374151;
         }
 
         .admin-table th {
-          background: #f9fafb;
+          background: #1f2937;
           font-weight: 600;
-          color: #374151;
+          color: #22c55e;
           font-size: 0.875rem;
-          text-transform: uppercase;
+          text-transform: lowercase;
           letter-spacing: 0.05em;
         }
 
+        .admin-table td {
+          color: #e5e7eb;
+        }
+
         .admin-table tr:hover {
-          background: #f9fafb;
+          background: #374151;
         }
 
         .status-badge {
