@@ -4,18 +4,21 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from './Navbar';
 
+import maizeImage from './images/maize.jpg';
+import beansImage from './images/beans.jpg';
+import potatoesImage from './images/potatoes.jpg';
+
 const HomePage = () => {
   const { t } = useTranslation();
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    // Simulate fetching only published products
-    const publishedProducts = [
+ const publishedProducts = [
       {
         id: 1,
         name: "Maize",
-        image: "/images/maize.jpg",
-        farmer: "John Doe",
+        image: maizeImage,
+        farmer: "John Musana",
         phone: "+250 78 123 4567",
         price: "200",
         published: true
@@ -23,8 +26,8 @@ const HomePage = () => {
       {
         id: 2,
         name: "Beans",
-        image: "/images/beans.jpg",
-        farmer: "Jane Smith",
+        image: beansImage,
+        farmer: "Jane Uwimana",
         phone: "+250 78 987 6543",
         price: "450",
         published: true
@@ -32,14 +35,14 @@ const HomePage = () => {
       {
         id: 3,
         name: "Potatoes",
-        image: "/images/potatoes.jpg",
-        farmer: "Robert Johnson",
+        image: potatoesImage,
+        farmer: "Robert Nkurunziza",
         phone: "+250 78 555 1212",
         price: "250",
         published: true
       }
     ].filter(p => p.published);
-    
+
     setProducts(publishedProducts);
   }, []);
 
@@ -52,18 +55,28 @@ const HomePage = () => {
       className="home-container"
     >
       <Navbar />
-      
+
       <div className="products-section">
         <h2>{t('home.featuredProducts')}</h2>
         <div className="product-grid">
           {products.map(product => (
-            <motion.div 
-              className="product-card" 
+            <motion.div
+              className="product-card"
               key={product.id}
               whileHover={{ scale: 1.03 }}
               transition={{ duration: 0.2 }}
             >
-              <img src={product.image} alt={product.name} />
+              <div className="product-image-container">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="product-image"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = '/images/placeholder-crop.jpg'
+                  }}
+                />
+              </div>
               <div className="product-info">
                 <h3>{product.name}</h3>
                 <p className="farmer-name">{product.farmer}</p>
