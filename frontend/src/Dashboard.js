@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 
-// Import images at the top of the file
 import maizeImage from './images/maize.jpg';
 import beansImage from './images/beans.jpg';
 import potatoesImage from './images/potatoes.jpg';
 import defaultCropImage from './images/maize.jpg';
-import defaultProfileImage from './images/potatoes.jpg';
+
 
 function Dashboard() {
   const { t } = useTranslation();
