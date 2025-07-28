@@ -61,13 +61,13 @@ const AuthPage = () => {
       const data = response.data;
 
       localStorage.setItem('token', data.token);
-      localStorage.setItem('email', data.email);
+      localStorage.setItem('user', JSON.stringify(data));
 
       switch (data.userType) {
         case 'FARMER':
           navigate('/farmer-dashboard');
           break;
-        case 'CLIENT':
+        case 'CITIZEN':
           navigate('/client-dashboard');
           break;
         case 'ADMIN':
