@@ -12,6 +12,7 @@ i18n
             client: "Client",
             admin: "Admin"
           },
+          appName:"AGRI-LINK Rwanda",
           welcome: "Welcome to AgriLink Rwanda",
           login: "Login",
           signupLabel: "Sign Up",

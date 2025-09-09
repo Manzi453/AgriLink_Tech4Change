@@ -18,8 +18,8 @@ const WelcomePage = () => {
       <div className="language-switcher-container">
         <LanguageSwitcher />
       </div>
-      
-      <motion.div 
+
+      <motion.div
         className="welcome-content"
         initial={{ y: 20 }}
         animate={{ y: 0 }}

@@ -1,8 +1,8 @@
-// src/AuthPage.js
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 
 const AuthPage = () => {
   const { t } = useTranslation();
@@ -12,8 +12,7 @@ const AuthPage = () => {
     fullName: '',
     email: '',
     password: '',
-    confirmPassword: '',
-    role: 'client'
+    confirmPassword: ''
   });
   const [error, setError] = useState('');
 
@@ -22,11 +21,10 @@ const AuthPage = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    // Simple validation
     if (!isLoginMode) {
       if (formData.password !== formData.confirmPassword) {
         setError(t('auth.passwordsDontMatch'));
@@ -36,18 +34,50 @@ const AuthPage = () => {
         setError(t('auth.passwordLength'));
         return;
       }
+
+      try {
+        const response = await axios.post('https://agrilink-backend-production.up.railway.app/agriConnect/public/signup/citizen', {
+          fullName: formData.fullName,
+          email: formData.email,
+          password: formData.password
+        });
+
+        const data = response.data;
+        alert(data.message || 'Signup successful. You can now log in.');
+        setIsLoginMode(true);
+      } catch (err) {
+        setError(err.response?.data?.message || 'Signup failed');
+      }
+
+      return;
     }
 
-    // Store user role in localStorage
-    localStorage.setItem('userRole', formData.role);
+    try {
+      const response = await axios.post('https://agrilink-backend-production.up.railway.app/agriConnect/auth/login', {
+        email: formData.email,
+        password: formData.password
+      });
 
-    // Redirect based on role
-    if (formData.role === 'farmer') {
-      navigate('/farmer-dashboard');
-    } else if (formData.role === 'client') {
-      navigate('/client-dashboard');
-    } else if (formData.role === 'admin') {
-      navigate('/admin-dashboard');
+      const data = response.data;
+
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data));
+
+      switch (data.userType) {
+        case 'FARMER':
+          navigate('/farmer-dashboard');
+          break;
+        case 'CITIZEN':
+          navigate('/client-dashboard');
+          break;
+        case 'ADMIN':
+          navigate('/admin-dashboard');
+          break;
+        default:
+          navigate('/');
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Login failed');
     }
   };
 
@@ -143,19 +173,6 @@ const AuthPage = () => {
             </div>
           )}
 
-          <div className="form-group">
-            <select
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="role-select"
-            >
-              <option value="farmer">{t('roles.farmer')}</option>
-              <option value="client">{t('roles.client')}</option>
-              <option value="admin">{t('roles.admin')}</option>
-            </select>
-          </div>
-
           <motion.button
             type="submit"
             className="auth-btn"
@@ -178,7 +195,7 @@ const AuthPage = () => {
           </div>
           {isLoginMode && (
             <div className="farmer-membership-link">
-              {t('auth.areYouFarmer')} 
+              {t('auth.areYouFarmer')}{" "}
               <Link to="/membership" className="membership-link">
                 {t('auth.requestMembership')}
               </Link>

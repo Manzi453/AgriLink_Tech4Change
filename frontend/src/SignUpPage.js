@@ -33,7 +33,7 @@ const SignUpPage = () => {
       exit={{ opacity: 0 }}
       className="page-container"
     >
-      <motion.div 
+      <motion.div
         className="dark-card"
         initial={{ y: 20 }}
         animate={{ y: 0 }}
